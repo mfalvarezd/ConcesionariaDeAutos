@@ -8,6 +8,7 @@ package com.alvarez.concesionariadeautos.modelo;
  *
  * @author Moises Alvarez
  */
+//automovil
 public class Automovil extends Vehiculo{
     private int numAsientos;
     private boolean esConvertible;
