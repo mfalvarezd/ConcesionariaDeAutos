@@ -278,17 +278,19 @@ public class ConcesionariaDeAutos {
                                 System.out.println(cont + ") " + s.mostrarInformacion());
                                 cont++;
                             }
-                            System.out.println("Seleccione la opcion que desea Aprobar");
+                            System.out.println("Seleccione la opcion que desea Rechazar");
                             int opcionRechazada = opcionesVendedor.nextInt();
                             Solicitud solicitudRechazada = vendedorLogeado.getSolicitudes().get(opcionRechazada-1);
                             solicitudRechazada.setEstado(EstadoSolicitud.RECHAZADA);
                             System.out.println("Ingrese motivo de rechazo a la solicitud: ");
                             Scanner motivoEntrada = new Scanner(System.in);
-                            String motivo = motivoEntrada.next();
-                            vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo);
+                            String motivo = motivoEntrada.nextLine();
                             System.out.println("Cotizacion Rechazada");
+                            vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo);
+                            System.out.println(motivo);
+                            
                             vendedorLogeado.eliminarSolicitud(solicitudRechazada);
-                            motivoEntrada.close();
+                            
 
                             break;
                         case 3:
