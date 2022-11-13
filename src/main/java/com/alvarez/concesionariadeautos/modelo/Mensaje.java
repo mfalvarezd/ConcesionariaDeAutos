@@ -45,7 +45,7 @@ public class Mensaje {
 
     @Override
     public String toString() {
-        return "Mensaje{" + "El usuario " + receptor.nombres+" "+ receptor.apellidos + "envia el Mensaje=" + Mensaje + '}';
+        return "Mensaje{" + "El usuario " + emisor.nombres+" "+ emisor.apellidos +  " envia el Mensaje: " + Mensaje + '}';
     }
     
     
