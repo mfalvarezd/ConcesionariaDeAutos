@@ -143,7 +143,7 @@ public class ConcesionariaDeAutos {
 
         System.out.println("Usuario: " + clienteLogeado.getNombres() + " " + clienteLogeado.getApellidos());
         if (clienteLogeado.getMensajes().size() > 0) {
-            clienteLogeado.leerMensajes();
+            System.out.println("Tiene: "+clienteLogeado.getMensajes().size()+" nuevo(s)");
 
         } else {
             if (clienteLogeado.getVehiculos().isEmpty()) {
@@ -200,7 +200,11 @@ public class ConcesionariaDeAutos {
 
                             if (clienteLogeado.getMensajes().size() > 0) {
 
-                                clienteLogeado.leerMensajes();
+                                for(Mensaje mensaje: clienteLogeado.getMensajes()){
+                                    System.out.println("El vendedor le envia:");
+                                    System.out.println(mensaje.getMensaje());
+                                    
+                                }
                             } else {
                                 System.out.println("No tiene mensajes nuevos");
                             }
@@ -285,7 +289,7 @@ public class ConcesionariaDeAutos {
                             System.out.println("Ingrese motivo de rechazo a la solicitud: ");
                             Scanner motivoEntrada = new Scanner(System.in);
                             String motivo = motivoEntrada.nextLine();
-                            System.out.println("Cotizacion Rechazada");
+                            
                             vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo);
                             System.out.println(motivo);
                             
