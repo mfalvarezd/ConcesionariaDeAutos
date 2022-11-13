@@ -11,12 +11,12 @@ package com.alvarez.concesionariadeautos.modelo;
 public class Mensaje {
     private Usuario receptor;
     private Usuario emisor;
-    private String Mensaje;
+    private String mensaje;
 
     public Mensaje(Usuario receptor, Usuario emisor, String Mensaje) {
         this.receptor = receptor;
         this.emisor = emisor;
-        this.Mensaje = Mensaje;
+        this.mensaje = Mensaje;
     }
 
     public Usuario getReceptor() {
@@ -36,16 +36,16 @@ public class Mensaje {
     }
 
     public String getMensaje() {
-        return Mensaje;
+        return mensaje;
     }
 
     public void setMensaje(String Mensaje) {
-        this.Mensaje = Mensaje;
+        this.mensaje = Mensaje;
     }
 
     @Override
     public String toString() {
-        return "Mensaje{" + "El usuario " + emisor.nombres+" "+ emisor.apellidos +  " envia el Mensaje: " + Mensaje + '}';
+        return "Mensaje{" + "El usuario " + emisor.nombres+" "+ emisor.apellidos +  " envia el Mensaje: " + mensaje.toUpperCase() + '}';
     }
     
     
