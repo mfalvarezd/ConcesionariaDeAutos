@@ -29,7 +29,7 @@ public class Vendedor extends Usuario{
         }
     }
     public void rechazarCotizacion(Cliente usuario, String motivo){
-        usuario.addMensaje(new Mensaje(this, usuario, motivo));
+        usuario.addMensaje(new Mensaje(usuario, this, motivo));
         for(Solicitud solicitud: solicitudes){
             if(solicitud.getUsuario().equals(usuario.getUsuario())){
                 solicitud.setEstado(EstadoSolicitud.RECHAZADA);
