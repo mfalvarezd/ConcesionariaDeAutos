@@ -33,7 +33,7 @@ public class ConcesionariaDeAutos {
             System.out.println("2) Salir del sistema");
             System.out.println("Ingrese su opcion: (Ingrese solo opciones del 1 al 2)");
             opciones = sc.nextInt();
-//probando credenciales
+//probando  otra vez
             switch (opciones) {
                 case 1:
                     iniciarSesion();// el metodo iniciar sesion nos devuelve un usuario, el usuario que logea se guarda en la variable usuarioLogeado
