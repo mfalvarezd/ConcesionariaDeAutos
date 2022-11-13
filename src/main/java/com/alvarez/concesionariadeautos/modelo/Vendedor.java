@@ -24,7 +24,7 @@ public class Vendedor extends Usuario{
         usuario.addMensaje(new Mensaje(usuario, this,"Ha recibido la informacion completa del vehiculo que cotizo "+ vehiculo.mostrarInformacion()));
         for(Solicitud solicitud: solicitudes){
             if( solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitud.setEstado(EstadoSolicitud.PENDIENTE);
+                solicitud.setEstado(EstadoSolicitud.APROBADA);
             }
         }
     }
