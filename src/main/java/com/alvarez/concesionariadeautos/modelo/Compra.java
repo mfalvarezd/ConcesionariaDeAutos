@@ -8,6 +8,7 @@ package com.alvarez.concesionariadeautos.modelo;
  *
  * @author Moises Alvarez
  */
+//Compra
 public class Compra extends Solicitud {
 
     public Compra(Usuario usuario, Vehiculo vehiculo) {
