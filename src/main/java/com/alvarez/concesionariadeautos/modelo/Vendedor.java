@@ -41,7 +41,9 @@ public class Vendedor extends Usuario{
     public String mostrarInformacion() {
         return super.mostrarInformacion()+", vendedor con id=" + id + '}';
     }
-    
+    public void eliminarSolicitud(Solicitud solicitud){
+        this.solicitudes.remove(solicitud);
+    }
     
     
 
