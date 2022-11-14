@@ -20,6 +20,7 @@ public class ConcesionariaDeAutos {
     static ArrayList<Vehiculo> vehiculos = cargarVehiculos();
     static Usuario usuarioLogeado;
     static Vehiculo vehiculoInteresado;
+    static Supervisor supervisor = getSupervisor();
 
     public static void main(String[] args) {
 
@@ -142,84 +143,106 @@ public class ConcesionariaDeAutos {
         Scanner opcionesCliente = new Scanner(System.in);
 
         System.out.println("Usuario: " + clienteLogeado.getNombres() + " " + clienteLogeado.getApellidos());
-        if (clienteLogeado.getMensajes().size() > 0) {
-            System.out.println("Tiene: "+clienteLogeado.getMensajes().size()+" nuevo(s)");
 
-        } else {
-            if (clienteLogeado.getVehiculos().isEmpty()) {
-
-                while (!salir) {
-                    System.out.println("\tOpciones");
-                    System.out.println("1) Cotizar auto del Stock de vehiculos");
-                    System.out.println("2) Revisar Solicitudes pendientes");
-                    System.out.println("3) Revisar Mensajes");
-                    System.out.println("4) Salir");
-                    System.out.println("Ingrese una de las opciones: solo opciones del 1 al 3");
-                    opciones = opcionesCliente.nextInt();
-                    switch (opciones) {
-                        case 1:
-
-                            if (!disponibilidadAutos()) {
-                                System.out.println("No tenemos autos disponibles o en stock, vuelva pronto!");
-                            } else {
-                                int cont = 1;
-
-                                for (Vehiculo vehiculo : stockDeVehiculosAcliente()) {
-                                    System.out.println(cont + ") " + vehiculo.mostrarInformacionCliente());
-                                    cont++;
-                                }
-                                System.out.println("0) Cancelar");
-                                System.out.println("Ingrese la opcion del auto que desea cotizar: (Ingrese solo opciones del 0 al " + stockDeVehiculosAcliente().size());
-
-                                int opcionVehiculo = opcionesCliente.nextInt();
-                                if (opcionVehiculo == 0) {
-                                    break;
-                                }
-                                vehiculoInteresado = stockDeVehiculosAcliente().get(opcionVehiculo - 1);
-                                if (clienteLogeado.verificarSolicitud(vehiculoInteresado) == true) {
-                                    System.out.println("Ya ha cotizado este vehiculo anteriormente, elija  otro vehiculo");
-                                } else {
-                                    Solicitud solicitud = clienteLogeado.cotizarVehiculo(vehiculoInteresado);
-                                    Vendedor vendedorAleatorio = getVendedorAleatorio();
-                                    vendedorAleatorio.addSolicitud(solicitud);//En esta linea le agregamos a un vendedor aleatorio la  cotizacion que genero el 
-                                    clienteLogeado.addSolicitud(solicitud);// Le agregamos la solicitud que genero el Cliente a su lista de solicitudes para que pueda verificar el estado de sus solicitudes
-                                    System.out.println("Su solicitud ha sido enviada, recibira un mensaje cuando sea contestada");
-                                    System.out.println("El vendedor aleatorio: " + vendedorAleatorio.getUsuario());
-                                }
-
-                            }
-                            break;
-                        case 2:
-                            System.out.println("Tiene " + clienteLogeado.getSolicitudes().size() + " solicitud(es)");
-                            int cont = 1;
-                            for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
-                                System.out.println(cont + ") " + solicitud.mostrarInformacion());
-                            }
-                            break;
-                        case 3:
-
-                            if (clienteLogeado.getMensajes().size() > 0) {
-
-                                for(Mensaje mensaje: clienteLogeado.getMensajes()){
-                                    System.out.println("El vendedor le envia:");
-                                    System.out.println(mensaje.getMensaje());
-                                    
-                                }
-                            } else {
-                                System.out.println("No tiene mensajes nuevos");
-                            }
-                            break;
-
-                        case 4:
-                            salir = true;
-                            break;
-                    }
-                }
-
-            } else {
+        while (!salir) {
+            if (clienteLogeado.getMensajes().size() > 0) {
+                System.out.println("Tiene: " + clienteLogeado.getMensajes().size() + " mensaje nuevo(s)");
 
             }
+            System.out.println("\tOpciones");
+            System.out.println("1) Cotizar auto del Stock de vehiculos");
+            System.out.println("2) Revisar Solicitudes pendientes");
+            System.out.println("3) Revisar Mensajes");
+            System.out.println("4) Salir");
+            System.out.println("Ingrese una de las opciones: solo opciones del 1 al 3");
+            opciones = opcionesCliente.nextInt();
+            switch (opciones) {
+                case 1:
 
+                    if (!disponibilidadAutos()) {
+                        System.out.println("No tenemos autos disponibles o en stock, vuelva pronto!");
+                    } else {
+                        int cont = 1;
+
+                        for (Vehiculo vehiculo : stockDeVehiculosAcliente()) {
+                            System.out.println(cont + ") " + vehiculo.mostrarInformacionCliente());
+                            cont++;
+                        }
+                        System.out.println("0) Cancelar");
+                        System.out.println("Ingrese la opcion del auto que desea cotizar: (Ingrese solo opciones del 0 al " + stockDeVehiculosAcliente().size());
+
+                        int opcionVehiculo = opcionesCliente.nextInt();
+                        if (opcionVehiculo == 0) {
+                            break;
+                        }
+                        vehiculoInteresado = stockDeVehiculosAcliente().get(opcionVehiculo - 1);
+                        if (clienteLogeado.verificarSolicitud(vehiculoInteresado) == true) {
+                            System.out.println("Ya ha cotizado este vehiculo anteriormente, elija  otro vehiculo");
+                        } else {
+                            Solicitud solicitud = clienteLogeado.cotizarVehiculo(vehiculoInteresado);
+                            Vendedor vendedorAleatorio = getVendedorAleatorio();
+                            vendedorAleatorio.addSolicitud(solicitud);//En esta linea le agregamos a un vendedor aleatorio la  cotizacion que genero el 
+                            clienteLogeado.addSolicitud(solicitud);// Le agregamos la solicitud que genero el Cliente a su lista de solicitudes para que pueda verificar el estado de sus solicitudes
+                            System.out.println("Su solicitud ha sido enviada, recibira un mensaje cuando sea contestada");
+                            System.out.println("El vendedor aleatorio: " + vendedorAleatorio.getUsuario());
+                        }
+
+                    }
+                    break;
+                case 2:
+                    System.out.println("Tiene " + clienteLogeado.getSolicitudes().size() + " solicitud(es)");
+                    int cont = 1;
+                    for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
+                        System.out.println(cont + ") " + solicitud.mostrarInformacion());
+                    }
+                    break;
+                case 3:
+
+                    if (clienteLogeado.getMensajes().size() > 0) {
+
+                        for (Mensaje mensaje : clienteLogeado.getMensajes()) {
+                            if (mensaje.getEmisor() instanceof Vendedor) {
+                                Scanner entradaCompra = new Scanner(System.in);
+                                System.out.println("El vendedor le envia:");
+                                System.out.println(mensaje.getMensaje());
+                                System.out.println("Seleccion 1 si desea solicitar la compra del vehiculo");
+                                System.out.println("Seleccione 0 si rechaza la cotizacion");
+                                int opcionCompra = entradaCompra.nextInt();
+                                switch(opcionCompra){
+                                    case 0:
+                                        System.out.println("Eliminando mensaje...");
+                                        clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje 
+                                        ArrayList<Solicitud> solicitudCotizacion = new ArrayList<>();
+                                        for(Solicitud solicitud: clienteLogeado.getSolicitudes()){
+                                            solicitudCotizacion.add(solicitud);
+                                        }
+                                        clienteLogeado.getSolicitudes().remove(solicitudCotizacion.get(0));// eliminamos la solicitud de cotizacion
+
+                                        break;
+                                    case 1:
+                                        ArrayList<Vehiculo> vehiculoInteresados= new ArrayList<>();
+                                        for(Solicitud solicitud: clienteLogeado.getSolicitudes()){
+                                            vehiculoInteresados.add(solicitud.getVehiculo());
+                                        }
+                                        vehiculoInteresado = vehiculoInteresados.get(0);
+                                        Solicitud solicitudCompra=clienteLogeado.comprarVehiculo(vehiculoInteresado);
+                                        supervisor.addSolicitud(solicitudCompra);
+                                        System.out.println("Se ha solicitado la compra del vehiculo, le avisaremos pronto cuando su compra sea verificada");
+                                        System.out.println("Este mensaje sera eliminado...");
+                                }
+
+                            }
+
+                        }
+                    } else {
+                        System.out.println("No tiene mensajes nuevos");
+                    }
+                    break;
+
+                case 4:
+                    salir = true;
+                    break;
+            }
         }
 
     }
@@ -248,9 +271,9 @@ public class ConcesionariaDeAutos {
                     }
                     break;
                 case 2:
-                    if(vendedorLogeado.getSolicitudes().size()==0){
+                    if (vendedorLogeado.getSolicitudes().size() == 0) {
                         System.out.println("No tiene nuevas solicitudes de Cotizacion");
-                        break;                   
+                        break;
                     }
 
                     for (Solicitud solicitud : vendedorLogeado.getSolicitudes()) {
@@ -271,7 +294,7 @@ public class ConcesionariaDeAutos {
                             }
                             System.out.println("Seleccione la opcion que desea Aprobar");
                             int opcionAprobada = opcionesVendedor.nextInt();
-                            Solicitud solicitud = vendedorLogeado.getSolicitudes().get(opcionAprobada-1);
+                            Solicitud solicitud = vendedorLogeado.getSolicitudes().get(opcionAprobada - 1);
                             solicitud.setEstado(EstadoSolicitud.APROBADA);
                             vendedorLogeado.enviarCotizacion((Cliente) solicitud.getUsuario(), solicitud.getVehiculo());
                             System.out.println("Cotizacion Enviada");
@@ -284,25 +307,24 @@ public class ConcesionariaDeAutos {
                             }
                             System.out.println("Seleccione la opcion que desea Rechazar");
                             int opcionRechazada = opcionesVendedor.nextInt();
-                            Solicitud solicitudRechazada = vendedorLogeado.getSolicitudes().get(opcionRechazada-1);
+                            Solicitud solicitudRechazada = vendedorLogeado.getSolicitudes().get(opcionRechazada - 1);
                             solicitudRechazada.setEstado(EstadoSolicitud.RECHAZADA);
                             System.out.println("Ingrese motivo de rechazo a la solicitud: ");
                             Scanner motivoEntrada = new Scanner(System.in);
                             String motivo = motivoEntrada.nextLine();
-                            
+
                             vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo);
                             System.out.println(motivo);
-                            
+
                             vendedorLogeado.eliminarSolicitud(solicitudRechazada);
-                            
 
                             break;
                         case 3:
                             break;
-                            
+
                     }
                 case 3:
-                    salir= true;
+                    salir = true;
 
                     break;
             }
@@ -377,6 +399,15 @@ public class ConcesionariaDeAutos {
         Random r = new Random();
         int n = r.nextInt(fin - inicio) + inicio;
         return n;
+    }
+    public static Supervisor getSupervisor(){
+        ArrayList<Supervisor> supervisor = new ArrayList<>();
+        for(Usuario usuario: usuarios){
+            if(usuario instanceof Vendedor){
+                supervisor.add((Supervisor) usuario);
+            }
+        }
+        return supervisor.get(0);
     }
 
 }
