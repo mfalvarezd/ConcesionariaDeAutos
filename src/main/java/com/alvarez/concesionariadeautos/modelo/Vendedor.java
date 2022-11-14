@@ -44,6 +44,7 @@ public class Vendedor extends Usuario{
     public void eliminarSolicitud(Solicitud solicitud){
         this.solicitudes.remove(solicitud);
     }
+    //pROBAND
     
     
 
