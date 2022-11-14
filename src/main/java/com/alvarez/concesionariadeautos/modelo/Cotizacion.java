@@ -16,7 +16,7 @@ public class Cotizacion extends Solicitud{
 
     @Override
     public String mostrarInformacion() {
-        return "Cotizacion {El usuario:"+ usuario.usuario+" solicita la cotizacion del vehiculo "+vehiculo.mostrarInformacionCliente();
+        return "Cotizacion {El usuario:"+ usuario.usuario+" solicita la cotizacion del vehiculo "+vehiculo.mostrarInformacionCliente()+" el estado de su solicitud es: "+estado+'}';
     }
     
     
