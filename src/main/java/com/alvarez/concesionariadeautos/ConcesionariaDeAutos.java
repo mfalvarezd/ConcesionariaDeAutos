@@ -229,6 +229,9 @@ public class ConcesionariaDeAutos {
                                         supervisor.addSolicitud(solicitudCompra);
                                         System.out.println("Se ha solicitado la compra del vehiculo, le avisaremos pronto cuando su compra sea verificada");
                                         System.out.println("Este mensaje sera eliminado...");
+                                        clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje 
+                                    default:
+                                        System.out.println("Ingrese solo opciones del 0 al 1");
                                 }
 
                             }
