@@ -248,6 +248,7 @@ public class ConcesionariaDeAutos {
                     }
                     break;
                 case 4:
+                    System.out.println("Tipo de Mantenimientos");
                     break;
                     
 
@@ -259,15 +260,21 @@ public class ConcesionariaDeAutos {
 
     }
     public static boolean esClienteHabitual(Cliente cliente){
-        
+        int cont=0;
         for(Vehiculo vehiculo: cliente.getVehiculos()){
             if(vehiculo.getConcesionaria().equals(concesionaria)){
-                return true;
+                cont++;
+                
                 
             }
             
         }
-        return false;
+        if(cont>0){
+            return true;
+        }else{
+            return false;
+        }
+        
         
     }
 
