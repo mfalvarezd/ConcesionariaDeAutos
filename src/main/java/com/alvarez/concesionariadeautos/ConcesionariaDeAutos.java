@@ -21,6 +21,7 @@ public class ConcesionariaDeAutos {
     static Usuario usuarioLogeado;
     static Vehiculo vehiculoInteresado;
     static Supervisor supervisor = getSupervisor();
+    static String concesionaria ="AutoLasa";
 
     public static void main(String[] args) {
 
@@ -41,6 +42,7 @@ public class ConcesionariaDeAutos {
                     String tipoUsuario = getTipoUsuario(usuarioLogeado);// con esto validamos que tipo de usuario es el que logea para mostrar su respectivo menu
                     switch (tipoUsuario) {
                         case "Cliente":
+                            
                             System.out.println("Credenciales correctas");
                             System.out.println("--------------------------------------");
                             System.out.println("\tBienvenido Cliente");
@@ -153,7 +155,11 @@ public class ConcesionariaDeAutos {
             System.out.println("1) Cotizar auto del Stock de vehiculos");
             System.out.println("2) Revisar Solicitudes pendientes");
             System.out.println("3) Revisar Mensajes");
-            System.out.println("4) Salir");
+            if(esClienteHabitual(clienteLogeado)){
+                System.out.println("4) Realizar mantenimiento");
+            }
+           
+            System.out.println("0) Salir");
             System.out.println("Ingrese una de las opciones: solo opciones del 1 al 3");
             opciones = opcionesCliente.nextInt();
             switch (opciones) {
@@ -241,13 +247,28 @@ public class ConcesionariaDeAutos {
                         System.out.println("No tiene mensajes nuevos");
                     }
                     break;
-
                 case 4:
+                    break;
+                    
+
+                case 0:
                     salir = true;
                     break;
             }
         }
 
+    }
+    public static boolean esClienteHabitual(Cliente cliente){
+        
+        for(Vehiculo vehiculo: cliente.getVehiculos()){
+            if(vehiculo.getConcesionaria().equals(concesionaria)){
+                return true;
+                
+            }
+            
+        }
+        return false;
+        
     }
 
     public static void menuVendedor() {
