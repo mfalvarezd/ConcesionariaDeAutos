@@ -13,9 +13,7 @@ import java.util.logging.Logger;
  */
 public abstract class Usuario {
 
-    public static Logger getLOG() {
-        return LOG;
-    }
+
 
     protected String nombres;
     protected String apellidos;
@@ -103,12 +101,8 @@ public abstract class Usuario {
         this.mensajes.add(mensaje);
     }
 
-    private static final Logger LOG = Logger.getLogger(Usuario.class.getName());
 
-    public String tipoUsuario() {
-        return LOG.toString();
 
-    }
     
 
 }
