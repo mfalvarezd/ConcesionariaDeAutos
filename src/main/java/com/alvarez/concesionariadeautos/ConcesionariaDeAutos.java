@@ -21,7 +21,8 @@ public class ConcesionariaDeAutos {
     static Usuario usuarioLogeado;
     static Vehiculo vehiculoInteresado;
     static Supervisor supervisor = getSupervisor();
-    static String concesionaria ="AutoLasa";
+    static JefeDeTaller jefeDeTaller = getJefeDeTaller();
+    static String concesionaria = "AutoLasa";
 
     public static void main(String[] args) {
 
@@ -42,7 +43,7 @@ public class ConcesionariaDeAutos {
                     String tipoUsuario = getTipoUsuario(usuarioLogeado);// con esto validamos que tipo de usuario es el que logea para mostrar su respectivo menu
                     switch (tipoUsuario) {
                         case "Cliente":
-                            
+
                             System.out.println("Credenciales correctas");
                             System.out.println("--------------------------------------");
                             System.out.println("\tBienvenido Cliente");
@@ -155,10 +156,10 @@ public class ConcesionariaDeAutos {
             System.out.println("1) Cotizar auto del Stock de vehiculos");
             System.out.println("2) Revisar Solicitudes pendientes");
             System.out.println("3) Revisar Mensajes");
-            if(esClienteHabitual(clienteLogeado)){
+            if (esClienteHabitual(clienteLogeado)) {
                 System.out.println("4) Realizar mantenimiento");
             }
-           
+
             System.out.println("0) Salir");
             System.out.println("Ingrese una de las opciones: solo opciones del 1 al 3");
             opciones = opcionesCliente.nextInt();
@@ -214,28 +215,36 @@ public class ConcesionariaDeAutos {
                                 System.out.println("Seleccion 1 si desea solicitar la compra del vehiculo");
                                 System.out.println("Seleccione 0 si rechaza la cotizacion");
                                 int opcionCompra = entradaCompra.nextInt();
-                                switch(opcionCompra){
+                                switch (opcionCompra) {
                                     case 0:
                                         System.out.println("Eliminando mensaje...");
                                         clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje 
                                         ArrayList<Solicitud> solicitudCotizacion = new ArrayList<>();
-                                        for(Solicitud solicitud: clienteLogeado.getSolicitudes()){
+                                        for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
                                             solicitudCotizacion.add(solicitud);
                                         }
                                         clienteLogeado.getSolicitudes().remove(solicitudCotizacion.get(0));// eliminamos la solicitud de cotizacion
 
                                         break;
                                     case 1:
-                                        ArrayList<Vehiculo> vehiculoInteresados= new ArrayList<>();
-                                        for(Solicitud solicitud: clienteLogeado.getSolicitudes()){
-                                            vehiculoInteresados.add(solicitud.getVehiculo());
+                                        for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
+                                            if (solicitud instanceof Cotizacion) {
+                                                if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
+                                                    
+                                                    
+                                                    
+                                                    supervisor.addSolicitud(clienteLogeado.comprarVehiculo(solicitud.getVehiculo()));
+                                                    System.out.println("Se ha solicitado la compra del vehiculo, le avisaremos pronto cuando su compra sea verificada");
+                                                    System.out.println("Este mensaje sera eliminado...");
+                                                    clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje
+
+                                                }
+                                                clienteLogeado.getSolicitudes().remove(solicitud);
+
+                                            }
+
                                         }
-                                        vehiculoInteresado = vehiculoInteresados.get(0);
-                                        Solicitud solicitudCompra=clienteLogeado.comprarVehiculo(vehiculoInteresado);
-                                        supervisor.addSolicitud(solicitudCompra);
-                                        System.out.println("Se ha solicitado la compra del vehiculo, le avisaremos pronto cuando su compra sea verificada");
-                                        System.out.println("Este mensaje sera eliminado...");
-                                        clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje 
+
                                     default:
                                         System.out.println("Ingrese solo opciones del 0 al 1");
                                 }
@@ -249,8 +258,29 @@ public class ConcesionariaDeAutos {
                     break;
                 case 4:
                     System.out.println("Tipo de Mantenimientos");
+                    System.out.println("1) Mantenimiento Preventivo");
+                    System.out.println("2) Mantenimiento Emergente");
+                    System.out.println("Seleccione una de las opciones :");
+                    int opcionesMantenimiento = opcionesCliente.nextInt();
+                    switch (opcionesMantenimiento) {
+                        case 1:
+                            System.out.println("\tLista de vehiculos del cliente:");
+                            cont = 0;
+                            for (Vehiculo vehiculo : clienteLogeado.getVehiculos()) {
+                                System.out.println(cont + 1 + ") " + vehiculo.mostrarInformacionCliente());
+                            }
+                            System.out.println("Seleccione el auto que desea solicitar mantenimiento Preventivo");
+                            opcionesMantenimiento = opcionesCliente.nextInt();
+                            Vehiculo vehiculoParaMantenimiento = clienteLogeado.getVehiculos().get(opcionesMantenimiento);
+                            Mantenimiento solicitudMantenimiento = new Mantenimiento(clienteLogeado, vehiculoParaMantenimiento);
+                            jefeDeTaller.addSolicitud(solicitudMantenimiento);
+                            clienteLogeado.addSolicitud(solicitudMantenimiento);
+                            System.out.println("Su solicitud ha sido enviada, le enviaremos un mensaje cuando su solicitud sea respondida");
+
+                            break;
+
+                    }
                     break;
-                    
 
                 case 0:
                     salir = true;
@@ -259,19 +289,18 @@ public class ConcesionariaDeAutos {
         }
 
     }
-    public static boolean esClienteHabitual(Cliente cliente){
-        int cont=0;
-        for(Vehiculo vehiculo: cliente.getVehiculos()){
-            if(vehiculo.getConcesionaria().equals(concesionaria)){
+
+    public static boolean esClienteHabitual(Cliente cliente) {
+        int cont = 0;
+        for (Vehiculo vehiculo : cliente.getVehiculos()) {
+            if (vehiculo.getConcesionaria().equals(concesionaria)) {
                 cont++;
-                
-                
+
             }
-            
+
         }
-        return cont>0;
-        
-        
+        return cont > 0;
+
     }
 
     public static void menuVendedor() {
@@ -386,7 +415,7 @@ public class ConcesionariaDeAutos {
         ArrayList<String> certificacionesTecnicas = new ArrayList<>();
         certificacionesTecnicas.add("Certificacion en Jefe de Taller Mecanico");
         certificacionesTecnicas.add("Certificacion en Mecanica Automotriz");
-        listaUsuarios.add(new Supervisor(certificacionesTecnicas, "Alvaro Gregorio", "Arboleda Benitez", "Aarboleda", "123"));
+        listaUsuarios.add(new JefeDeTaller(certificacionesTecnicas, "Alvaro Gregorio", "Arboleda Benitez", "Aarboleda", "123"));
         return listaUsuarios;
     }
 
@@ -427,14 +456,25 @@ public class ConcesionariaDeAutos {
         int n = r.nextInt(fin - inicio) + inicio;
         return n;
     }
-    public static Supervisor getSupervisor(){
+
+    public static Supervisor getSupervisor() {
         ArrayList<Supervisor> supervisor = new ArrayList<>();
-        for(Usuario usuario: usuarios){
-            if(usuario instanceof Vendedor){
+        for (Usuario usuario : usuarios) {
+            if (usuario instanceof Supervisor) {
                 supervisor.add((Supervisor) usuario);
             }
         }
         return supervisor.get(0);
+    }
+
+    public static JefeDeTaller getJefeDeTaller() {
+        ArrayList<JefeDeTaller> jefeDeTaller = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            if (usuario instanceof JefeDeTaller) {
+                jefeDeTaller.add((JefeDeTaller) usuario);
+            }
+        }
+        return jefeDeTaller.get(0);
     }
 
 }
