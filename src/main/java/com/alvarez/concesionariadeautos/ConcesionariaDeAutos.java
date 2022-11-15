@@ -269,11 +269,7 @@ public class ConcesionariaDeAutos {
             }
             
         }
-        if(cont>0){
-            return true;
-        }else{
-            return false;
-        }
+        return cont>0;
         
         
     }
