@@ -9,6 +9,7 @@ package com.alvarez.concesionariadeautos.modelo;
  * @author Moises Alvarez
  */
 public abstract class Vehiculo {
+
     protected String marca;
     protected String modelo;
     protected int anioFabricacion;
@@ -20,7 +21,7 @@ public abstract class Vehiculo {
     protected double kilometraje;
     protected String concesionaria;
 
-    public Vehiculo(String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado,double kilometraje, String concesionaria) {
+    public Vehiculo(String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
         this.marca = marca;
         this.modelo = modelo;
         this.anioFabricacion = anioFabricacion;
@@ -28,7 +29,7 @@ public abstract class Vehiculo {
         this.numLlantas = numLlantas;
         this.precio = precio;
         this.estado = estado;
-        this.kilometraje=kilometraje;
+        this.kilometraje = kilometraje;
         this.concesionaria = concesionaria;
     }
 
@@ -39,12 +40,10 @@ public abstract class Vehiculo {
     public void setKilometraje(double kilometraje) {
         this.kilometraje = kilometraje;
     }
-    
+
     public void setEstadoMantenimiento(EstadoMantenimiento estadoMantenimiento) {
         this.estadoMantenimiento = estadoMantenimiento;
     }
-    
-    
 
     public String getMarca() {
         return marca;
@@ -102,8 +101,6 @@ public abstract class Vehiculo {
         this.concesionaria = concesionaria;
     }
 
-    
-
     public int getNumLlantas() {
         return numLlantas;
     }
@@ -111,25 +108,32 @@ public abstract class Vehiculo {
     public void setNumLlantas(int numLlantas) {
         this.numLlantas = numLlantas;
     }
-    
-    public String getInformacionParaCliente(){
-        return this.marca+" "+this.modelo;
+
+    public String getInformacionParaCliente() {
+        return this.marca + " " + this.modelo;
     }
 
- 
     public String mostrarInformacion() {
         return "Vehiculo{" + "marca=" + marca + ", modelo=" + modelo + ", anioFabricacion=" + anioFabricacion + ", tipoMotor=" + tipoMotor + ", numLlantas=" + numLlantas + ", precio=" + precio + ", estado=" + estado + ", kilometraje=" + kilometraje + ", concesionaria=" + concesionaria;
     }
-    public String mostrarInformacionCliente(){
-        return "Vehiculo{ "+ "marca="+ marca +", modelo="+modelo;
+
+    public String mostrarInformacionCliente() {
+        return "Vehiculo{ " + "marca=" + marca + ", modelo=" + modelo;
     }
 
-    
-
+    public void mostrarDatos() {
+        
+        System.out.println("Marca: " + marca);
+        System.out.println("Modelo: " + modelo);
+        System.out.println("Año de fabricacion: " + anioFabricacion);
+        System.out.println("Tipo de motor: " + tipoMotor);
+        System.out.println("Numero de llantas: " + numLlantas);
+        System.out.println("Precio: "+ precio+"$");
+        System.out.println("Kilometraje: "+kilometraje+"km");
+    }
 
     public EstadoMantenimiento getEstadoMantenimiento() {
         return estadoMantenimiento;
     }
-
 
 }
