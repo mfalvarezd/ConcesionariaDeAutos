@@ -207,6 +207,9 @@ public class ConcesionariaDeAutos {
 
                     if (tieneSolicitudesAprobadas(clienteLogeado.getSolicitudes())) {
                         for (int i = 0; i < getCotizacionesAprobadas(clienteLogeado.getSolicitudes()).size(); i++) {
+                            Vehiculo vehiculoCotizado=clienteLogeado.getSolicitudes().get(i).getVehiculo();
+                            System.out.println("\tSe ha aprobado su cotizacion para el vehiculo:");
+                            vehiculoCotizado.mostrarDatos();
 
                         }
 
