@@ -17,6 +17,16 @@ public class Tractor extends Vehiculo{
         this.esAgricola = esAgricola;
         this.tipoTransmision = tipoTransmision;
     }
+    @Override
+    public void mostrarDatos(){
+        super.mostrarDatos();
+        if(esAgricola){
+            System.out.println("El tractor SI es de uso Agricola");
+        }else{
+            System.out.println("El tractor NO es de uso Agricola");
+        }
+        System.out.println("Tipo de transmision: "+tipoTransmision);
+    }
 
 
 
