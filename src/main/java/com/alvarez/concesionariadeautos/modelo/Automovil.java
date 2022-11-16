@@ -65,6 +65,21 @@ public class Automovil extends Vehiculo{
     public String mostrarInformacion() {
         return super.mostrarInformacion()+", numAsientos=" + numAsientos + ", esConvertible=" + esConvertible + ", camaraRetro=" + camaraRetro + '}'; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
+    @Override
+    public void mostrarDatos(){
+        super.mostrarDatos();
+        System.out.println("Numero de asientos: " + numAsientos);
+        if(esConvertible){
+            System.out.println("El auto SI es convertible");
+        }else{
+            System.out.println("El auto NO es convertible");
+        }
+        if(camaraRetro){
+            System.out.println("El auto Si tiene Camara de Retro");
+        }else{
+            System.out.println("El auto No tiene Camara de Retro");
+        }
+    }
 
 
     
