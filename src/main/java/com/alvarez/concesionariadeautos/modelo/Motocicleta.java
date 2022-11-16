@@ -27,6 +27,11 @@ public class Motocicleta extends Vehiculo{
     public String mostrarInformacionCliente() {
         return super.mostrarInformacionCliente(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
+    @Override
+    public void mostrarDatos(){
+        super.mostrarDatos();
+        System.out.println("Categoria de moto: "+categoria);
+    }
     
     
     
