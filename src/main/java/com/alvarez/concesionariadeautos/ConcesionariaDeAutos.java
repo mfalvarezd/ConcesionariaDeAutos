@@ -205,55 +205,15 @@ public class ConcesionariaDeAutos {
                     break;
                 case 3:
 
-                    if (clienteLogeado.getMensajes().size() > 0) {
-
-                        for (Mensaje mensaje : clienteLogeado.getMensajes()) {
-                            if (mensaje.getEmisor() instanceof Vendedor) {
-                                Scanner entradaCompra = new Scanner(System.in);
-                                System.out.println("El vendedor le envia:");
-                                System.out.println(mensaje.getMensaje());
-                                System.out.println("Seleccion 1 si desea solicitar la compra del vehiculo");
-                                System.out.println("Seleccione 0 si rechaza la cotizacion");
-                                int opcionCompra = entradaCompra.nextInt();
-                                switch (opcionCompra) {
-                                    case 0:
-                                        System.out.println("Eliminando mensaje...");
-                                        clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje 
-                                        ArrayList<Solicitud> solicitudCotizacion = new ArrayList<>();
-                                        for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
-                                            solicitudCotizacion.add(solicitud);
-                                        }
-                                        clienteLogeado.getSolicitudes().remove(solicitudCotizacion.get(0));// eliminamos la solicitud de cotizacion
-
-                                        break;
-                                    case 1:
-                                        for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
-                                            if (solicitud instanceof Cotizacion) {
-                                                if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
-                                                    
-                                                    
-                                                    
-                                                    supervisor.addSolicitud(clienteLogeado.comprarVehiculo(solicitud.getVehiculo()));
-                                                    System.out.println("Se ha solicitado la compra del vehiculo, le avisaremos pronto cuando su compra sea verificada");
-                                                    System.out.println("Este mensaje sera eliminado...");
-                                                    clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje
-
-                                                }
-                                                clienteLogeado.getSolicitudes().remove(solicitud);
-
-                                            }
-
-                                        }
-
-                                    default:
-                                        System.out.println("Ingrese solo opciones del 0 al 1");
-                                }
-
-                            }
+                    if (tieneSolicitudesAprobadas(clienteLogeado.getSolicitudes())) {
+                        for (int i = 0; i < getCotizacionesAprobadas(clienteLogeado.getSolicitudes()).size(); i++) {
 
                         }
-                    } else {
+
+                    } else if (clienteLogeado.getSolicitudes().size() == 0) {
                         System.out.println("No tiene mensajes nuevos");
+                    } else {
+
                     }
                     break;
                 case 4:
@@ -288,6 +248,36 @@ public class ConcesionariaDeAutos {
             }
         }
 
+    }
+
+    public static ArrayList<Solicitud> getCotizacionesAprobadas(ArrayList<Solicitud> solicitudes) {
+        ArrayList<Solicitud> solCotizacion = new ArrayList<>();
+
+        for (Solicitud solicitud : solicitudes) {
+            if (solicitud instanceof Cotizacion) {
+                if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
+                    solCotizacion.add(solicitud);
+
+                }
+
+            }
+
+        }
+        return solCotizacion;
+    }
+
+    public static boolean tieneSolicitudesAprobadas(ArrayList<Solicitud> solicitudes) {
+        ArrayList<Solicitud> solAprobadas = new ArrayList<>();
+
+        for (Solicitud solicitud : solicitudes) {
+
+            if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
+                solAprobadas.add(solicitud);
+
+            }
+
+        }
+        return solAprobadas.size() > 0;
     }
 
     public static boolean esClienteHabitual(Cliente cliente) {
