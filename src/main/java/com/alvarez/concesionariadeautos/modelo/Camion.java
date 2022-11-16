@@ -24,6 +24,12 @@ public class Camion extends Vehiculo{
     public String mostrarInformacion() {
         return super.mostrarInformacion()+", capacidadCarga=" + capacidadCarga + ", numEjes=" + numEjes + '}'; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
+    @Override
+    public void mostrarDatos(){
+        super.mostrarDatos();
+        System.out.println("Capacidad carga: "+capacidadCarga);
+        System.out.println("Numero de Ejes: "+numEjes);
+    }
 
 
 
