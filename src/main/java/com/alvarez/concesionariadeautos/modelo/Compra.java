@@ -17,6 +17,6 @@ public class Compra extends Solicitud {
     
     @Override
     public String mostrarInformacion(){
-        return "Compra {El usuario "+ usuario.getNombres()+" solicita la compra del vehiculo "+vehiculo.mostrarInformacionCliente();
+        return "Compra {El usuario "+ usuario.getNombres()+" solicita la compra del vehiculo "+vehiculo.mostrarInformacionCliente()+ "Estado: "+estado;
     }
 }

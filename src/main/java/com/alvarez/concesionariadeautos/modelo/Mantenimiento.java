@@ -25,6 +25,9 @@ public class Mantenimiento extends Solicitud{
     public void setEstadoDeMantenimiento(EstadoMantenimiento estadoDeMantenimiento) {
         this.estadoDeMantenimiento = estadoDeMantenimiento;
     }
+    public void setTipoMantenimiento(TipoMantenimiento tipoMantenimiento){
+        this.tipoMantenimiento=tipoMantenimiento;
+    }
     
     @Override
     public String mostrarInformacion(){

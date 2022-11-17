@@ -16,13 +16,13 @@ import java.util.Scanner;
  */
 public class ConcesionariaDeAutos {
 
-    static ArrayList<Usuario> usuarios = cargarUsuarios();
-    static ArrayList<Vehiculo> vehiculos = cargarVehiculos();
-    static Usuario usuarioLogeado;
-    static Vehiculo vehiculoInteresado;
-    static Supervisor supervisor = getSupervisor();
-    static JefeDeTaller jefeDeTaller = getJefeDeTaller();
-    static String concesionaria = "AutoLasa";
+    static ArrayList<Usuario> usuarios = cargarUsuarios();//Aqui se cargan todos los usuarios que existen en el sistema
+    static ArrayList<Vehiculo> vehiculos = cargarVehiculos();//Lista con el inventario de vehiculos de la concesionaria
+    static Usuario usuarioLogeado;//usuario que logea al iniciar sesion al sistema
+
+    static Supervisor supervisor = getSupervisor();//Supervisor encargado de manejar las ventas de la concesionaria
+    static JefeDeTaller jefeDeTaller = getJefeDeTaller();//Jefe de taller encargado de manejar el taller
+    static String concesionaria = "AutoLasa";//Nombre de la condesionaria
 
     public static void main(String[] args) {
 
@@ -30,7 +30,7 @@ public class ConcesionariaDeAutos {
         int opciones;
         Scanner sc = new Scanner(System.in);
         while (!salir) {
-            System.out.println("Bienvenido al Sistema");
+            System.out.println("Bienvenido al Sistema de la concesionaria "+concesionaria);
             System.out.println("Menu");
             System.out.println("1) Iniciar Sesion");
             System.out.println("2) Salir del sistema");
@@ -182,7 +182,7 @@ public class ConcesionariaDeAutos {
                         if (opcionVehiculo == 0) {
                             break;
                         }
-                        vehiculoInteresado = stockDeVehiculosAcliente().get(opcionVehiculo - 1);
+                        Vehiculo vehiculoInteresado = stockDeVehiculosAcliente().get(opcionVehiculo - 1);
                         if (clienteLogeado.verificarSolicitud(vehiculoInteresado) == true) {
                             System.out.println("Ya ha cotizado este vehiculo anteriormente, elija  otro vehiculo");
                         } else {
@@ -202,11 +202,25 @@ public class ConcesionariaDeAutos {
                     for (Solicitud solicitud : clienteLogeado.getSolicitudes()) {
                         System.out.println(cont + ") " + solicitud.mostrarInformacion());
                     }
+                    System.out.println("Digite 0 para volver al menu");
+                    int op = opcionesCliente.nextInt();
+                    if(op==0){
+                        System.out.println("Volviendo al menu...");
+                        break;
+                    }
+                    
+                    
                     break;
                 case 3:
 
                     if (clienteLogeado.getMensajes().size() == 0) {
                         System.out.println("No tiene mensajes nuevos");
+                        System.out.println("Digite 0 para volver al menu:");
+                        op = opcionesCliente.nextInt();
+                        if(op==0){
+                            System.out.println("Volviendo al menu");
+                            break;
+                        }
                         break;
                     }
                     for (int i = 0; i < clienteLogeado.getMensajes().size(); i++) {
@@ -225,7 +239,8 @@ public class ConcesionariaDeAutos {
                             Vendedor vendedorAsignado = (Vendedor) mensaje.getEmisor();
                             vehiculoCotizado.mostrarDatos();
                             System.out.println("Digite 1 para solicitar la compra del vehiculo");
-                            System.out.println("Digite 0 para rechazar la oferta del vehiculo");
+                            System.out.println("Digite 2 para rechazar la oferta del vehiculo");
+                            System.out.println("Digite 0 para volver al menu");
                             System.out.println("Digite su opcion:");
                             Scanner entradaMensaje = new Scanner(System.in);
                             int opcionMensaje = entradaMensaje.nextInt();
@@ -240,13 +255,18 @@ public class ConcesionariaDeAutos {
                                     clienteLogeado.getMensajes().remove(mensaje);
                                     clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
                                     break;
-                                case 0:
+                                case 2:
                                     System.out.println("Ha rechazado la oferta");
                                     System.out.println("Vuelva pronto");
                                     System.out.println("Eliminando mensaje...");
                                     clienteLogeado.getMensajes().remove(mensaje);
                                     clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
                                     break;
+                                case 0:
+                                    System.out.println("Volviendo al menu...");
+                                    i=clienteLogeado.getMensajes().size();
+                                    break;
+                                    
                             }
                         }
 
@@ -257,6 +277,7 @@ public class ConcesionariaDeAutos {
                     System.out.println("Tipo de Mantenimientos");
                     System.out.println("1) Mantenimiento Preventivo");
                     System.out.println("2) Mantenimiento Emergente");
+                    System.out.println("0) volver");
                     System.out.println("Seleccione una de las opciones :");
                     int opcionesMantenimiento = opcionesCliente.nextInt();
                     switch (opcionesMantenimiento) {
@@ -269,11 +290,31 @@ public class ConcesionariaDeAutos {
                             System.out.println("Seleccione el auto que desea solicitar mantenimiento Preventivo");
                             opcionesMantenimiento = opcionesCliente.nextInt();
                             Vehiculo vehiculoParaMantenimiento = clienteLogeado.getVehiculos().get(opcionesMantenimiento);
-                            Mantenimiento solicitudMantenimiento = new Mantenimiento(clienteLogeado, vehiculoParaMantenimiento);
+                            Mantenimiento solicitudMantenimiento = clienteLogeado.mantenerAuto(vehiculoParaMantenimiento);
+                            solicitudMantenimiento.setTipoMantenimiento(TipoMantenimiento.PREVENTIVO);
                             jefeDeTaller.addSolicitud(solicitudMantenimiento);
                             clienteLogeado.addSolicitud(solicitudMantenimiento);
                             System.out.println("Su solicitud ha sido enviada, le enviaremos un mensaje cuando su solicitud sea respondida");
 
+                            break;
+                        case 2:
+                            System.out.println("\tLista de vehiculos del cliente:");
+                            cont = 0;
+                            for (Vehiculo vehiculo : clienteLogeado.getVehiculos()) {
+                                System.out.println(cont + 1 + ") " + vehiculo.mostrarInformacionCliente());
+                            }
+                            System.out.println("Seleccione el auto que desea solicitar mantenimiento Emergente");
+                            opcionesMantenimiento = opcionesCliente.nextInt();
+                            Vehiculo vEmergente = clienteLogeado.getVehiculos().get(opcionesMantenimiento);
+                            Mantenimiento solicitudMantenimientoE = clienteLogeado.mantenerAuto(vEmergente);
+                            solicitudMantenimientoE.setTipoMantenimiento(TipoMantenimiento.EMERGENTE);
+                            jefeDeTaller.addSolicitud(solicitudMantenimientoE);
+                            clienteLogeado.addSolicitud(solicitudMantenimientoE);
+                            System.out.println("Su solicitud ha sido enviada, le enviaremos un mensaje cuando su solicitud sea respondida");
+                            
+                            break;
+                        case 0:
+                            System.out.println("Volviendo al menu...");
                             break;
 
                     }
@@ -287,42 +328,9 @@ public class ConcesionariaDeAutos {
 
     }
 
-    public static void eliminarMensajes(Usuario usuario, ArrayList<Mensaje> mensajesParaEliminar) {
 
-        for (int i = 0; i < mensajesParaEliminar.size(); i++) {
-            usuario.getMensajes().remove(mensajesParaEliminar.get(i));
-        }
 
-    }
 
-    public static Solicitud getSolicitudAprobada(ArrayList<Solicitud> solicitudes) {
-        Solicitud[] solAprobada = new Solicitud[1];
-        for (Solicitud solicitud : solicitudes) {
-            if (solicitud instanceof Cotizacion) {
-                if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
-                    solAprobada[0] = solicitud;
-
-                }
-
-            }
-
-        }
-        return solAprobada[0];
-    }
-
-    public static boolean tieneSolicitudesAprobadas(Usuario usuario) {
-        ArrayList<Solicitud> solAprobadas = new ArrayList<>();
-
-        for (Solicitud solicitud : usuario.getSolicitudes()) {
-
-            if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
-                solAprobadas.add(solicitud);
-
-            }
-
-        }
-        return solAprobadas.size() > 0;
-    }
 
     public static boolean esClienteHabitual(Cliente cliente) {
         int cont = 0;
