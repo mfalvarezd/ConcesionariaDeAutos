@@ -186,10 +186,10 @@ public class ConcesionariaDeAutos {
                         if (clienteLogeado.verificarSolicitud(vehiculoInteresado) == true) {
                             System.out.println("Ya ha cotizado este vehiculo anteriormente, elija  otro vehiculo");
                         } else {
-                            Solicitud solicitud = clienteLogeado.cotizarVehiculo(vehiculoInteresado);
+                            Cotizacion solicitudCotizacion = clienteLogeado.cotizarVehiculo(vehiculoInteresado);
                             Vendedor vendedorAleatorio = getVendedorAleatorio();
-                            vendedorAleatorio.addSolicitud(solicitud);//En esta linea le agregamos a un vendedor aleatorio la  cotizacion que genero el 
-                            clienteLogeado.addSolicitud(solicitud);// Le agregamos la solicitud que genero el Cliente a su lista de solicitudes para que pueda verificar el estado de sus solicitudes
+                            vendedorAleatorio.addSolicitud(solicitudCotizacion);//En esta linea le agregamos a un vendedor aleatorio la  cotizacion que genero el 
+                            clienteLogeado.addSolicitud(solicitudCotizacion);// Le agregamos la solicitud que genero el Cliente a su lista de solicitudes para que pueda verificar el estado de sus solicitudes
                             System.out.println("Su solicitud ha sido enviada, recibira un mensaje cuando sea contestada");
                             System.out.println("El vendedor aleatorio: " + vendedorAleatorio.getUsuario());
                         }
@@ -205,20 +205,54 @@ public class ConcesionariaDeAutos {
                     break;
                 case 3:
 
-                    if (tieneSolicitudesAprobadas(clienteLogeado.getSolicitudes())) {
-                        for (int i = 0; i < getCotizacionesAprobadas(clienteLogeado.getSolicitudes()).size(); i++) {
-                            Vehiculo vehiculoCotizado=clienteLogeado.getSolicitudes().get(i).getVehiculo();
-                            System.out.println("\tSe ha aprobado su cotizacion para el vehiculo:");
-                            vehiculoCotizado.mostrarDatos();
-
-                        }
-
-                    } else if (clienteLogeado.getSolicitudes().size() == 0) {
+                    if (clienteLogeado.getMensajes().size() == 0) {
                         System.out.println("No tiene mensajes nuevos");
-                    } else {
+                        break;
+                    }
+                    for (int i = 0; i < clienteLogeado.getMensajes().size(); i++) {
+
+                        MensajeCotizacion mensaje = (MensajeCotizacion) clienteLogeado.getMensajes().get(i);
+                        Usuario emisor = mensaje.getEmisor();
+                        Vehiculo vehiculoCotizado = mensaje.getVehiculo();
+                        if (mensaje.getEmisor() instanceof Vendedor && mensaje.getSolicitud().getEstado().equals(EstadoSolicitud.RECHAZADA)) {
+                            System.out.println("Su solicitud fue rechazada porque:" + mensaje.getMensaje());
+                            System.out.println("Eliminando mensaje...");
+                            clienteLogeado.getMensajes().remove(mensaje);
+                            clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
+
+                        } else if (mensaje.getEmisor() instanceof Vendedor) {
+                            System.out.println(mensaje.getMensaje());
+                            Vendedor vendedorAsignado = (Vendedor) mensaje.getEmisor();
+                            vehiculoCotizado.mostrarDatos();
+                            System.out.println("Digite 1 para solicitar la compra del vehiculo");
+                            System.out.println("Digite 0 para rechazar la oferta del vehiculo");
+                            System.out.println("Digite su opcion:");
+                            Scanner entradaMensaje = new Scanner(System.in);
+                            int opcionMensaje = entradaMensaje.nextInt();
+                            switch (opcionMensaje) {
+                                case 1:
+                                    System.out.println("Se ha enviado la solicitud de compra");
+                                    System.out.println("Le enviaremos un mensaje cuando su solicitud sea respondida");
+                                    System.out.println("Eliminando mensaje...");
+                                    Compra solicitudCompra = clienteLogeado.comprarVehiculo(vehiculoCotizado);
+                                    supervisor.addSolicitud(solicitudCompra);
+                                    clienteLogeado.addSolicitud(solicitudCompra);
+                                    clienteLogeado.getMensajes().remove(mensaje);
+                                    clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
+                                    break;
+                                case 0:
+                                    System.out.println("Ha rechazado la oferta");
+                                    System.out.println("Vuelva pronto");
+                                    System.out.println("Eliminando mensaje...");
+                                    clienteLogeado.getMensajes().remove(mensaje);
+                                    clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
+                                    break;
+                            }
+                        }
 
                     }
                     break;
+
                 case 4:
                     System.out.println("Tipo de Mantenimientos");
                     System.out.println("1) Mantenimiento Preventivo");
@@ -253,26 +287,33 @@ public class ConcesionariaDeAutos {
 
     }
 
-    public static ArrayList<Solicitud> getCotizacionesAprobadas(ArrayList<Solicitud> solicitudes) {
-        ArrayList<Solicitud> solCotizacion = new ArrayList<>();
+    public static void eliminarMensajes(Usuario usuario, ArrayList<Mensaje> mensajesParaEliminar) {
 
+        for (int i = 0; i < mensajesParaEliminar.size(); i++) {
+            usuario.getMensajes().remove(mensajesParaEliminar.get(i));
+        }
+
+    }
+
+    public static Solicitud getSolicitudAprobada(ArrayList<Solicitud> solicitudes) {
+        Solicitud[] solAprobada = new Solicitud[1];
         for (Solicitud solicitud : solicitudes) {
             if (solicitud instanceof Cotizacion) {
                 if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
-                    solCotizacion.add(solicitud);
+                    solAprobada[0] = solicitud;
 
                 }
 
             }
 
         }
-        return solCotizacion;
+        return solAprobada[0];
     }
 
-    public static boolean tieneSolicitudesAprobadas(ArrayList<Solicitud> solicitudes) {
+    public static boolean tieneSolicitudesAprobadas(Usuario usuario) {
         ArrayList<Solicitud> solAprobadas = new ArrayList<>();
 
-        for (Solicitud solicitud : solicitudes) {
+        for (Solicitud solicitud : usuario.getSolicitudes()) {
 
             if (solicitud.getEstado().equals(EstadoSolicitud.APROBADA)) {
                 solAprobadas.add(solicitud);
@@ -345,7 +386,7 @@ public class ConcesionariaDeAutos {
                             int opcionAprobada = opcionesVendedor.nextInt();
                             Solicitud solicitud = vendedorLogeado.getSolicitudes().get(opcionAprobada - 1);
                             solicitud.setEstado(EstadoSolicitud.APROBADA);
-                            vendedorLogeado.enviarCotizacion((Cliente) solicitud.getUsuario(), solicitud.getVehiculo());
+                            vendedorLogeado.enviarCotizacion((Cliente) solicitud.getUsuario(), solicitud.getVehiculo(), solicitud);
                             System.out.println("Cotizacion Enviada");
                             break;
                         case 2:
@@ -357,12 +398,12 @@ public class ConcesionariaDeAutos {
                             System.out.println("Seleccione la opcion que desea Rechazar");
                             int opcionRechazada = opcionesVendedor.nextInt();
                             Solicitud solicitudRechazada = vendedorLogeado.getSolicitudes().get(opcionRechazada - 1);
-                            solicitudRechazada.setEstado(EstadoSolicitud.RECHAZADA);
+
                             System.out.println("Ingrese motivo de rechazo a la solicitud: ");
                             Scanner motivoEntrada = new Scanner(System.in);
                             String motivo = motivoEntrada.nextLine();
 
-                            vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo);
+                            vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo, solicitudRechazada);
                             System.out.println(motivo);
 
                             vendedorLogeado.eliminarSolicitud(solicitudRechazada);
