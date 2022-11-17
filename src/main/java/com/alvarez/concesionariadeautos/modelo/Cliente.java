@@ -60,8 +60,8 @@ public class Cliente extends Usuario{
         return new Cotizacion( this, vehiculo);
         
     }
-    public Compra comprarVehiculo(Vehiculo vehiculo){
-        return new Compra(this,vehiculo);
+    public Compra comprarVehiculo(Vehiculo vehiculo,Vendedor vendedor){
+        return new Compra(this,vehiculo,vendedor);
     }
     public Mantenimiento mantenerAuto(Vehiculo vehiculo){
         return new Mantenimiento(this, vehiculo);

@@ -30,7 +30,7 @@ public class ConcesionariaDeAutos {
         int opciones;
         Scanner sc = new Scanner(System.in);
         while (!salir) {
-            System.out.println("Bienvenido al Sistema de la concesionaria "+concesionaria);
+            System.out.println("Bienvenido al Sistema de la concesionaria " + concesionaria);
             System.out.println("Menu");
             System.out.println("1) Iniciar Sesion");
             System.out.println("2) Salir del sistema");
@@ -57,6 +57,7 @@ public class ConcesionariaDeAutos {
                             System.out.println("--------------------------------------");
                             System.out.println("\tBienvenido Supervisor");
                             System.out.println("--------------------------------------");
+                            menuSupervisor();
                             break;
                         case "Vendedor":
                             System.out.println("Credenciales correctas");
@@ -139,6 +140,78 @@ public class ConcesionariaDeAutos {
         return tipoUsuario;
     }
 
+    public static void menuSupervisor() {
+        Supervisor supervisorLogeado = (Supervisor) usuarioLogeado;
+        boolean salir = false;
+        int opciones;
+        Scanner opcionesSupervisor = new Scanner(System.in);
+
+        System.out.println("Usuario: " + supervisorLogeado.getNombres() + " " + supervisorLogeado.getApellidos());
+        while (!salir) {
+            if (supervisorLogeado.getSolicitudes().size() > 0) {
+                System.out.println("Tiene: " + supervisorLogeado.getSolicitudes().size() + " solicitud(es) de compra(s) nueva(s)");
+
+            }
+            System.out.println("\tOpciones");
+            System.out.println("1) Revisar solicitudes de compra");
+            System.out.println("2) Consultar numero de vehiculos vendidos por los vendedores");
+            System.out.println("3) Ingresar nuevos vehiculos al stock");
+            System.out.println("4) Salir");
+            System.out.println("Ingrese una de las opciones: solo opciones del 1 al 4");
+            opciones = opcionesSupervisor.nextInt();
+            switch (opciones) {
+                case 1:
+                    if (supervisorLogeado.getSolicitudes().size() == 0) {
+                        System.out.println("No tiene nuevas solicitudes de Compra");
+                        System.out.println("Seleccione 0 para volver al menu");
+                        int opcion = opcionesSupervisor.nextInt();
+                        if (opcion == 0) {
+                            System.out.println("Volviendo...");
+                            break;
+                        }
+
+                    }
+                    int cont = 0;
+
+                    for (Solicitud solicitud : supervisorLogeado.getSolicitudes()) {
+                        Compra compraSoli = (Compra) solicitud;
+                        compraSoli.mostrarInformacionSupervisor();
+                        cont++;
+                    }
+                    
+                    System.out.println("Digite 1 si desea aprobar solicitudes de compra");
+                    System.out.println("Digite 2 si desea rechazar solicitudes de compra");
+                    System.out.println("Digite 0 si desea volver al menu");
+                    System.out.println("Ingrese su opcion:");
+
+                    int opcionCompra = opcionesSupervisor.nextInt();
+                    switch(opcionCompra){
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 0:
+                            System.out.println("Volviendo al menu...");
+                            break;
+                    }
+
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    System.out.println("Cerrando sesion...");
+                    salir=true;
+                    break;
+                default:
+                    System.out.println("Ingrese solo opciones del 1 al 4");
+                    break;
+            }
+
+        }
+    }
+
     public static void menuCliente() {
         Cliente clienteLogeado = (Cliente) usuarioLogeado;
         boolean salir = false;
@@ -204,12 +277,11 @@ public class ConcesionariaDeAutos {
                     }
                     System.out.println("Digite 0 para volver al menu");
                     int op = opcionesCliente.nextInt();
-                    if(op==0){
+                    if (op == 0) {
                         System.out.println("Volviendo al menu...");
                         break;
                     }
-                    
-                    
+
                     break;
                 case 3:
 
@@ -217,7 +289,7 @@ public class ConcesionariaDeAutos {
                         System.out.println("No tiene mensajes nuevos");
                         System.out.println("Digite 0 para volver al menu:");
                         op = opcionesCliente.nextInt();
-                        if(op==0){
+                        if (op == 0) {
                             System.out.println("Volviendo al menu");
                             break;
                         }
@@ -229,10 +301,19 @@ public class ConcesionariaDeAutos {
                         Usuario emisor = mensaje.getEmisor();
                         Vehiculo vehiculoCotizado = mensaje.getVehiculo();
                         if (mensaje.getEmisor() instanceof Vendedor && mensaje.getSolicitud().getEstado().equals(EstadoSolicitud.RECHAZADA)) {
-                            System.out.println("Su solicitud fue rechazada porque:" + mensaje.getMensaje());
+                            System.out.println("\nSu solicitud fue rechazada para el vehiculo: "+mensaje.getVehiculo().getInformacionParaCliente()+" porque:" + mensaje.getMensaje());
                             System.out.println("Eliminando mensaje...");
+                            
                             clienteLogeado.getMensajes().remove(mensaje);
                             clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
+                            System.out.print("Digite 0 para volver al menu:");
+                            
+                            Scanner entradaMensaje = new Scanner(System.in);
+                            int opcionMensaje = entradaMensaje.nextInt();
+                            if(opcionMensaje==0){
+                                System.out.println("Volviendo al menu...");
+                                break;
+                            }
 
                         } else if (mensaje.getEmisor() instanceof Vendedor) {
                             System.out.println(mensaje.getMensaje());
@@ -249,7 +330,7 @@ public class ConcesionariaDeAutos {
                                     System.out.println("Se ha enviado la solicitud de compra");
                                     System.out.println("Le enviaremos un mensaje cuando su solicitud sea respondida");
                                     System.out.println("Eliminando mensaje...");
-                                    Compra solicitudCompra = clienteLogeado.comprarVehiculo(vehiculoCotizado);
+                                    Compra solicitudCompra = clienteLogeado.comprarVehiculo(vehiculoCotizado, vendedorAsignado);
                                     supervisor.addSolicitud(solicitudCompra);
                                     clienteLogeado.addSolicitud(solicitudCompra);
                                     clienteLogeado.getMensajes().remove(mensaje);
@@ -264,9 +345,9 @@ public class ConcesionariaDeAutos {
                                     break;
                                 case 0:
                                     System.out.println("Volviendo al menu...");
-                                    i=clienteLogeado.getMensajes().size();
+                                    i = clienteLogeado.getMensajes().size();
                                     break;
-                                    
+
                             }
                         }
 
@@ -311,7 +392,7 @@ public class ConcesionariaDeAutos {
                             jefeDeTaller.addSolicitud(solicitudMantenimientoE);
                             clienteLogeado.addSolicitud(solicitudMantenimientoE);
                             System.out.println("Su solicitud ha sido enviada, le enviaremos un mensaje cuando su solicitud sea respondida");
-                            
+
                             break;
                         case 0:
                             System.out.println("Volviendo al menu...");
@@ -328,10 +409,6 @@ public class ConcesionariaDeAutos {
 
     }
 
-
-
-
-
     public static boolean esClienteHabitual(Cliente cliente) {
         int cont = 0;
         for (Vehiculo vehiculo : cliente.getVehiculos()) {
@@ -347,13 +424,13 @@ public class ConcesionariaDeAutos {
 
     public static void menuVendedor() {
         Vendedor vendedorLogeado = (Vendedor) usuarioLogeado;
-        boolean salir = false;
+        boolean logout = false;
         int opciones;
         Scanner opcionesVendedor = new Scanner(System.in);
 
         System.out.println("Usuario: " + vendedorLogeado.getNombres() + " " + vendedorLogeado.getApellidos());
 
-        while (!salir) {
+        while (!logout) {
             System.out.println("\tOpciones:");
             System.out.println("1) Consultar Vehiculos");
             System.out.println("2) Consultar Solicitudes de Cotizacion");
@@ -367,11 +444,25 @@ public class ConcesionariaDeAutos {
                         cont++;
 
                     }
-                    break;
+                    Scanner entradaVendedor = new Scanner(System.in);
+
+                    System.out.println("Ingrese 0 para volver al menu:");
+                    int opcionVendedor = entradaVendedor.nextInt();
+                    if (opcionVendedor == 0) {
+                        System.out.println("Volviendo al menu...");
+                        break;
+                    }
+
                 case 2:
                     if (vendedorLogeado.getSolicitudes().size() == 0) {
                         System.out.println("No tiene nuevas solicitudes de Cotizacion");
-                        break;
+                        System.out.println("Seleccione 0 para volver al menu");
+                        int opcion = opcionesVendedor.nextInt();
+                        if (opcion == 0) {
+                            System.out.println("Volviendo...");
+                            break;
+                        }
+
                     }
 
                     for (Solicitud solicitud : vendedorLogeado.getSolicitudes()) {
@@ -382,47 +473,62 @@ public class ConcesionariaDeAutos {
                     System.out.println("2) Rechazar Solicitud");
                     System.out.println("3) Cancelar");
                     System.out.println("Seleccione una opcion:");
-                    opciones = opcionesVendedor.nextInt();
-                    switch (opciones) {
+                    int opcionesM= opcionesVendedor.nextInt();
+                    switch (opcionesM) {
                         case 1:
                             cont = 1;
                             for (Solicitud s : vendedorLogeado.getSolicitudes()) {
                                 System.out.println(cont + ") " + s.mostrarInformacion());
                                 cont++;
                             }
+                            System.out.println("0) Volver al menu solicitudes");
                             System.out.println("Seleccione la opcion que desea Aprobar");
                             int opcionAprobada = opcionesVendedor.nextInt();
+                            if (opcionAprobada == 0) {
+                                System.out.println("Volviendo...");
+                                break;
+                            }
                             Solicitud solicitud = vendedorLogeado.getSolicitudes().get(opcionAprobada - 1);
                             solicitud.setEstado(EstadoSolicitud.APROBADA);
                             vendedorLogeado.enviarCotizacion((Cliente) solicitud.getUsuario(), solicitud.getVehiculo(), solicitud);
                             System.out.println("Cotizacion Enviada");
+                            System.out.println("Solicitud contestada, eliminando solicitud del sistema...");
+                            vendedorLogeado.eliminarSolicitud(solicitud);
                             break;
+
                         case 2:
                             cont = 1;
                             for (Solicitud s : vendedorLogeado.getSolicitudes()) {
                                 System.out.println(cont + ") " + s.mostrarInformacion());
                                 cont++;
                             }
+                            System.out.println("0) Volver al menu solicitudes");
                             System.out.println("Seleccione la opcion que desea Rechazar");
                             int opcionRechazada = opcionesVendedor.nextInt();
+                            if (opcionRechazada == 0) {
+                                System.out.println("Volviendo...");
+                                break;
+                            }
                             Solicitud solicitudRechazada = vendedorLogeado.getSolicitudes().get(opcionRechazada - 1);
+                            Vehiculo vehiculoRechazado = solicitudRechazada.getVehiculo();
 
                             System.out.println("Ingrese motivo de rechazo a la solicitud: ");
                             Scanner motivoEntrada = new Scanner(System.in);
                             String motivo = motivoEntrada.nextLine();
 
-                            vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo, solicitudRechazada);
-                            System.out.println(motivo);
-
+                            vendedorLogeado.rechazarCotizacion((Cliente) solicitudRechazada.getUsuario(), motivo, solicitudRechazada,vehiculoRechazado);
+                            System.out.println("Solicitud contestada, eliminando solicitud del sistema...");
                             vendedorLogeado.eliminarSolicitud(solicitudRechazada);
 
                             break;
                         case 3:
+                            System.out.println("Volviendo al menu...");
                             break;
 
                     }
+                    break;
                 case 3:
-                    salir = true;
+                    logout = true;
 
                     break;
             }

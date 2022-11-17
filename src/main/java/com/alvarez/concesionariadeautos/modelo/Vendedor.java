@@ -11,6 +11,7 @@ package com.alvarez.concesionariadeautos.modelo;
 public class Vendedor extends Usuario {
 
     private String id;
+    private int ventasAprobadas=0;
 
     public Vendedor(String id, String nombres, String apellidos, String usuario, String password) {
         super(nombres, apellidos, usuario, password);
@@ -29,11 +30,15 @@ public class Vendedor extends Usuario {
 
     }
 
-    public void rechazarCotizacion(Cliente usuario, String motivo, Solicitud solicitud) {
-        usuario.addMensaje(new MensajeCotizacion(usuario, this, motivo, solicitud));
+    public void rechazarCotizacion(Cliente usuario, String motivo, Solicitud solicitud,Vehiculo vehiculo) {
+        usuario.addMensaje(new MensajeCotizacion(vehiculo,usuario, this, motivo, solicitud));
 
         solicitud.setEstado(EstadoSolicitud.RECHAZADA);
         usuario.getSolicitudes().get(usuario.solicitudes.indexOf(solicitud)).setEstado(EstadoSolicitud.RECHAZADA);
+    }
+    
+    public void aggVentasAprobadas(){
+        this.ventasAprobadas++;
     }
 
     @Override
