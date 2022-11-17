@@ -27,8 +27,8 @@ public class Compra extends Solicitud {
         return "Compra {El usuario "+ usuario.getNombres()+" solicita la compra del vehiculo "+vehiculo.mostrarInformacionCliente()+ "Estado: "+estado;
     }
     
-    public void mostrarInformacionSupervisor(){
-        System.out.println("Compra {El usuario "+ usuario.getNombres()+" solicita la compra del vehiculo "+vehiculo.mostrarInformacionCliente()+ "Estado: "+estado+" Vendedor: "+vendedor.getNombres()+" "+vendedor.getApellidos());
+    public String mostrarInformacionSupervisor(){
+        return "Compra {El usuario "+ usuario.getNombres()+" solicita la compra del vehiculo "+vehiculo.mostrarInformacionCliente()+ "Estado: "+estado+" Vendedor: "+vendedor.getNombres()+" "+vendedor.getApellidos();
     }
     
 }

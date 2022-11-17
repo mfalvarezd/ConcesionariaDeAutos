@@ -40,6 +40,9 @@ public class Vendedor extends Usuario {
     public void aggVentasAprobadas(){
         this.ventasAprobadas++;
     }
+    public int getVentasAprobadas(){
+        return ventasAprobadas;
+    }
 
     @Override
     public String mostrarInformacion() {
