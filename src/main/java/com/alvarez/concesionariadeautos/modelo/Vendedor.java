@@ -8,7 +8,8 @@ package com.alvarez.concesionariadeautos.modelo;
  *
  * @author Moises Alvarez
  */
-public class Vendedor extends Usuario{
+public class Vendedor extends Usuario {
+
     private String id;
 
     public Vendedor(String id, String nombres, String apellidos, String usuario, String password) {
@@ -18,35 +19,31 @@ public class Vendedor extends Usuario{
 
     public String getId() {
         return id;
-    } 
-    
-    public void enviarCotizacion(Cliente usuario, Vehiculo vehiculo){
-        usuario.addMensaje(new Mensaje(usuario, this,"Ha recibido la informacion completa del vehiculo que cotizo "));
-        for(Solicitud solicitud: solicitudes){
-            if( solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitud.setEstado(EstadoSolicitud.APROBADA);
-            }
-        }
     }
-    public void rechazarCotizacion(Cliente usuario, String motivo){
-        usuario.addMensaje(new Mensaje(usuario, this, motivo));
-        for(Solicitud solicitud: solicitudes){
-            if(solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitud.setEstado(EstadoSolicitud.RECHAZADA);
-            }
-        }
+
+    public void enviarCotizacion(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud) {
+        usuario.addMensaje(new MensajeCotizacion(vehiculo, usuario, this, "Ha recibido la informacion completa del vehiculo que cotizo ", solicitud));
+
+        solicitud.setEstado(EstadoSolicitud.APROBADA);
+        usuario.getSolicitudes().get(usuario.solicitudes.indexOf(solicitud)).setEstado(EstadoSolicitud.APROBADA);//
+
+    }
+
+    public void rechazarCotizacion(Cliente usuario, String motivo, Solicitud solicitud) {
+        usuario.addMensaje(new MensajeCotizacion(usuario, this, motivo, solicitud));
+
+        solicitud.setEstado(EstadoSolicitud.RECHAZADA);
+        usuario.getSolicitudes().get(usuario.solicitudes.indexOf(solicitud)).setEstado(EstadoSolicitud.RECHAZADA);
     }
 
     @Override
     public String mostrarInformacion() {
-        return super.mostrarInformacion()+", vendedor con id=" + id + '}';
+        return super.mostrarInformacion() + ", vendedor con id=" + id + '}';
     }
-    public void eliminarSolicitud(Solicitud solicitud){
+
+    public void eliminarSolicitud(Solicitud solicitud) {
         this.solicitudes.remove(solicitud);
     }
     //pROBAND
-    
-    
-
 
 }

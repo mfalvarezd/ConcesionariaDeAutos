@@ -10,7 +10,8 @@ import java.util.ArrayList;
  *
  * @author Moises Alvarez
  */
-public class Supervisor extends Usuario{
+public class Supervisor extends Usuario {
+
     private ArrayList<String> certificacionesAcademicas;
 
     public Supervisor(ArrayList<String> certificacionesAcademicas, String nombres, String apellidos, String usuario, String password) {
@@ -25,26 +26,20 @@ public class Supervisor extends Usuario{
     public void setCertificacionesAcademicas(ArrayList<String> certificacionesAcademicas) {
         this.certificacionesAcademicas = certificacionesAcademicas;
     }
-    
-    public void aprobarCompra(Cliente usuario, Vehiculo vehiculo){
-        usuario.addMensaje(new Mensaje(usuario, this, "Se ha aprobado su solicitud de compra para el vehiculo "+vehiculo.mostrarInformacion()+" le comunicaremos pronto cuando su vehiculo este listo para entrega"));
+
+    public void aprobarCompra(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud) {
+        solicitud.setEstado(EstadoSolicitud.APROBADA);
+
+        usuario.addMensaje(new MensajeCompra(vehiculo, usuario, this, "Se ha aprobado su solicitud de compra para el vehiculo " + vehiculo.mostrarInformacion() + " le comunicaremos pronto cuando su vehiculo este listo para entrega", solicitud));
         vehiculo.setEstado(EstadoVehiculo.SOLICITADO);
-        for(Solicitud solicitud: solicitudes){
-            if(solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitud.setEstado(EstadoSolicitud.APROBADA);
-            }
-        }
-        
-        
+
     }
-    public void rechazarCompra(Cliente usuario, String motivo,Vehiculo vehiculo){
-        usuario.addMensaje(new Mensaje(this, usuario, motivo));
-        for(Solicitud solicitud: solicitudes){
-            if(solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitud.setEstado(EstadoSolicitud.RECHAZADA);
-            }
-        }
+
+    public void rechazarCompra(Cliente usuario, String motivo, Vehiculo vehiculo,Solicitud solicitud) {
+        solicitud.setEstado(EstadoSolicitud.RECHAZADA);
+        usuario.addMensaje(new MensajeCompra(this, usuario, motivo,solicitud));
         
+
     }
 
     /**
@@ -53,9 +48,7 @@ public class Supervisor extends Usuario{
      */
     @Override
     public String mostrarInformacion() {
-        return super.mostrarInformacion()+", certificacionesAcademicas=" + certificacionesAcademicas + '}';
+        return super.mostrarInformacion() + ", certificacionesAcademicas=" + certificacionesAcademicas + '}';
     }
 
-    
-    
 }
