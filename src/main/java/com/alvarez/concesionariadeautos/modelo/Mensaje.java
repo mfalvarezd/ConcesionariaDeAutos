@@ -8,15 +8,17 @@ package com.alvarez.concesionariadeautos.modelo;
  *
  * @author Moises Alvarez
  */
-public class Mensaje {
+public abstract class Mensaje {
     private Usuario receptor;
     private Usuario emisor;
     private String mensaje;
+    public Solicitud solicitud;
 
-    public Mensaje(Usuario receptor, Usuario emisor, String Mensaje) {
+    public Mensaje(Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud) {
         this.receptor = receptor;
         this.emisor = emisor;
-        this.mensaje = Mensaje;
+        this.mensaje = mensaje;
+        this.solicitud=solicitud;
     }
 
     public Usuario getReceptor() {
@@ -42,6 +44,15 @@ public class Mensaje {
     public void setMensaje(String Mensaje) {
         this.mensaje = Mensaje;
     }
+
+    public Solicitud getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(Solicitud solicitud) {
+        this.solicitud = solicitud;
+    }
+    
 
     @Override
     public String toString() {
