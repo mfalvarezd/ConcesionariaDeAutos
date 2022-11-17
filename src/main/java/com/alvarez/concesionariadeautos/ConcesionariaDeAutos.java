@@ -185,13 +185,14 @@ public class ConcesionariaDeAutos {
                     int opcionCompra = opcionesSupervisor.nextInt();
                     switch (opcionCompra) {
                         case 1:
-                            int cont = 0;
+                            
 
                             for (int i = 0; i < supervisorLogeado.getSolicitudes().size(); i++) {
                                 Compra compraSoli = (Compra) supervisorLogeado.getSolicitudes().get(i);
-                                System.out.println((cont + 1) + ")" + compraSoli.mostrarInformacionSupervisor());
-                                System.out.println("Seleccione 0 para volver");
+                                System.out.println((i + 1) + ")" + compraSoli.mostrarInformacionSupervisor());
                                 System.out.println("Seleccione 1 para aceptar la solicitud de compra");
+                                System.out.println("Seleccione 0 para volver");
+                                
                                 int opcionM = opcionesSupervisor.nextInt();
                                 if (opcionM == 0) {
                                     System.out.println("Volviendo al menu...");
@@ -205,13 +206,43 @@ public class ConcesionariaDeAutos {
                                     vendedorDelVehiculo.aggVentasAprobadas();
                                     System.out.println("Solicitud contestada, eliminando solicitud del registro...");
                                     supervisorLogeado.getSolicitudes().remove(i);
-                                    cont++;
+                                    
 
                                 }
 
                             }
                             break;
                         case 2:
+                            
+
+                            for (int i = 0; i < supervisorLogeado.getSolicitudes().size(); i++) {
+                                Compra compraSoli = (Compra) supervisorLogeado.getSolicitudes().get(i);
+                                System.out.println((i + 1) + ")" + compraSoli.mostrarInformacionSupervisor());
+                                System.out.println("Seleccione 1 para rechazar la solicitud de compra");
+                                System.out.println("Seleccione 0 para volver");
+                                
+                                int opcionM = opcionesSupervisor.nextInt();
+                                if (opcionM == 0) {
+                                    System.out.println("Volviendo al menu...");
+                                    break;
+                                } else {
+                                    Scanner entradaTexto = new Scanner(System.in);
+                                    System.out.println("Ingrese el motivo:");
+                                    
+                                    String motivo = entradaTexto.nextLine();
+                                    Cliente clienteComprador = (Cliente) compraSoli.getUsuario();
+                                    Vendedor vendedorDelVehiculo = (Vendedor) compraSoli.getVendedor();
+                                    Vehiculo vehiculoSolicitado = compraSoli.getVehiculo();
+                                    supervisorLogeado.rechazarCompra(clienteComprador,motivo, vehiculoSolicitado, compraSoli);
+                                    
+                                    
+                                    System.out.println("Solicitud contestada, eliminando solicitud del registro...");
+                                    supervisorLogeado.getSolicitudes().remove(i);
+                                    
+
+                                }
+
+                            }
 
                             break;
                         case 0:
