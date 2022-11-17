@@ -49,36 +49,29 @@ public class JefeDeTaller extends Usuario{
     public String mostrarInformacion() {
         return super.mostrarInformacion()+", certificacionesTecnicas=" + certificacionesTecnicas + ", vehiculosPorEntregar=" + vehiculosPorEntregar + ", vehiculosEnMantenimiento=" + vehiculosEnMantenimiento + '}';
     }
-    public void entregarVehiculo(Cliente usuario, Vehiculo vehiculo){
+    public void entregarVehiculo(Cliente usuario, Vehiculo vehiculo,Solicitud solicitud){
         for(Vehiculo v: vehiculosPorEntregar){ 
             if(v.equals(vehiculo)){
-                usuario.addMensaje(new Mensaje(usuario, this,"Se le comunica que ya puede acercarse a retirar su vehiculo: "+v.mostrarInformacion()));
+                usuario.addMensaje(new MensajeConfirmacion(usuario, this,"Se le comunica que ya puede acercarse a retirar su vehiculo: "+v.mostrarInformacion(),solicitud));
                 
             }
        
         }
+        this.solicitudes.remove(solicitud);
     }
     
-    public void aprobarMantenimiento(Cliente usuario, Vehiculo vehiculo){
+    public void aprobarMantenimiento(Cliente usuario, Vehiculo vehiculo,Solicitud solicitud){
         vehiculo.setEstadoMantenimiento(EstadoMantenimiento.ADMITIDO);
-        usuario.addMensaje(new Mensaje(usuario,this,"Su vehiculo ha sido admitido en el taller para su mantenimiento"));
+        usuario.addMensaje(new MensajeConfirmacion(usuario,this,"Su vehiculo ha sido admitido en el taller para su mantenimiento",solicitud));
         vehiculosEnMantenimiento.add(vehiculo);
-        for(Solicitud solicitud: solicitudes){
-            if(solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitudes.remove(solicitud);
-            }
-        }
+        this.solicitudes.remove(solicitud);
         
         
     }
-    public void rechazarMantenimiento(Cliente usuario, String motivo){
+    public void rechazarMantenimiento(Cliente usuario, String motivo,Solicitud solicitud){
         
-        usuario.addMensaje(new Mensaje(usuario, this,motivo));
-        for(Solicitud solicitud: solicitudes){
-            if(solicitud.getUsuario().equals(usuario.getUsuario())){
-                solicitudes.remove(solicitud);
-            }
-        }
+        usuario.addMensaje(new MensajeConfirmacion(usuario, this,motivo,solicitud));
+        solicitudes.remove(solicitud);
     }
     public void calcularCosto(Vehiculo vehiculo,TipoMantenimiento tipoMantenimiento){
         Scanner sc = new Scanner(System.in);
