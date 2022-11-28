@@ -75,6 +75,7 @@ public class ConcesionariaDeAutos {
                             System.out.println("--------------------------------------");
                             System.out.println("\tBienvenido JefeDeTaller");
                             System.out.println("--------------------------------------");
+                            menuJefeDeTaller();
                             break;
 
                     }
@@ -142,6 +143,54 @@ public class ConcesionariaDeAutos {
         }
 
         return tipoUsuario;
+    }
+    public static void menuJefeDeTaller(){
+        JefeDeTaller jefeLogeado = (JefeDeTaller) usuarioLogeado;
+        boolean salir = false;
+        int opciones;
+        Scanner opcionesJefe = new Scanner(System.in);
+        System.out.println("Usuario: " + jefeLogeado.getNombres() + " " + jefeLogeado.getApellidos());
+        while(!salir){
+            if (jefeLogeado.getSolicitudes().size() > 0) {
+                System.out.println("Tiene: " + jefeLogeado.getSolicitudes().size() + " solicitud(es) de compra(s) nueva(s)");
+
+            }
+            System.out.println("\tOpciones");
+            System.out.println("1) Entregar Vehiculos");
+            System.out.println("2) Administrar vehiculos en Mantenimiento");
+            
+            System.out.println("3) Salir");
+            System.out.println("Ingrese una de las opciones: solo opciones del 1 al 3");
+            opciones = opcionesJefe.nextInt();
+            switch(opciones){
+                case 1:
+                    if(jefeLogeado.getVehiculosPorEntregar().size()>0){
+                        for(int i = 0; i< jefeLogeado.getVehiculosPorEntregar().size();i++){
+                            System.out.println((i+1)+") "+jefeLogeado.getVehiculosPorEntregar().get(i));
+                        }
+                    }else{
+                        System.out.println("No tiene vehiculos listo para entrega");
+                        System.out.println("Seleccione 0 para volver");
+                        opciones = opcionesJefe.nextInt();
+                        if(opciones==0){
+                            System.out.println("Volviendo...");
+                            break;
+                        }
+                    }
+                    break;
+                case 2:
+                    for(int i=0; i< jefeLogeado.getSolicitudes().size();i++){
+                        System.out.println(jefeLogeado.getSolicitudes().get(i));
+                    }
+                    break;
+                case 3:
+                    System.out.println("Saliendo...");
+                    salir= true;
+                    break;
+            }
+           
+            
+        }
     }
 
     public static void menuSupervisor() {
@@ -875,7 +924,7 @@ public class ConcesionariaDeAutos {
         ArrayList<String> certificacionesTecnicas = new ArrayList<>();
         certificacionesTecnicas.add("Certificacion en Jefe de Taller Mecanico");
         certificacionesTecnicas.add("Certificacion en Mecanica Automotriz");
-        listaUsuarios.add(new JefeDeTaller(certificacionesTecnicas, "Alvaro Gregorio", "Arboleda Benitez", "Aarboleda", "123"));
+        listaUsuarios.add(new JefeDeTaller(certificacionesTecnicas, "Alvaro Gregorio", "Arboleda Benitez", "garboleda", "123"));
         return listaUsuarios;
     }
 
