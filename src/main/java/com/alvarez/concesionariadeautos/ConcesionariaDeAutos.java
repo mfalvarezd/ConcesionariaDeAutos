@@ -24,6 +24,10 @@ public class ConcesionariaDeAutos {
     static JefeDeTaller jefeDeTaller = getJefeDeTaller();//Jefe de taller encargado de manejar el taller
     static String concesionaria = "AutoLasa";//Nombre de la condesionaria
 
+    public ConcesionariaDeAutos() {
+
+    }
+
     public static void main(String[] args) {
 
         boolean salir = false;
@@ -185,14 +189,13 @@ public class ConcesionariaDeAutos {
                     int opcionCompra = opcionesSupervisor.nextInt();
                     switch (opcionCompra) {
                         case 1:
-                            
 
                             for (int i = 0; i < supervisorLogeado.getSolicitudes().size(); i++) {
                                 Compra compraSoli = (Compra) supervisorLogeado.getSolicitudes().get(i);
                                 System.out.println((i + 1) + ")" + compraSoli.mostrarInformacionSupervisor());
                                 System.out.println("Seleccione 1 para aceptar la solicitud de compra");
                                 System.out.println("Seleccione 0 para volver");
-                                
+
                                 int opcionM = opcionesSupervisor.nextInt();
                                 if (opcionM == 0) {
                                     System.out.println("Volviendo al menu...");
@@ -206,21 +209,19 @@ public class ConcesionariaDeAutos {
                                     vendedorDelVehiculo.aggVentasAprobadas();
                                     System.out.println("Solicitud contestada, eliminando solicitud del registro...");
                                     supervisorLogeado.getSolicitudes().remove(i);
-                                    
 
                                 }
 
                             }
                             break;
                         case 2:
-                            
 
                             for (int i = 0; i < supervisorLogeado.getSolicitudes().size(); i++) {
                                 Compra compraSoli = (Compra) supervisorLogeado.getSolicitudes().get(i);
                                 System.out.println((i + 1) + ")" + compraSoli.mostrarInformacionSupervisor());
                                 System.out.println("Seleccione 1 para rechazar la solicitud de compra");
                                 System.out.println("Seleccione 0 para volver");
-                                
+
                                 int opcionM = opcionesSupervisor.nextInt();
                                 if (opcionM == 0) {
                                     System.out.println("Volviendo al menu...");
@@ -228,17 +229,15 @@ public class ConcesionariaDeAutos {
                                 } else {
                                     Scanner entradaTexto = new Scanner(System.in);
                                     System.out.println("Ingrese el motivo:");
-                                    
+
                                     String motivo = entradaTexto.nextLine();
                                     Cliente clienteComprador = (Cliente) compraSoli.getUsuario();
                                     Vendedor vendedorDelVehiculo = (Vendedor) compraSoli.getVendedor();
                                     Vehiculo vehiculoSolicitado = compraSoli.getVehiculo();
-                                    supervisorLogeado.rechazarCompra(clienteComprador,motivo, vehiculoSolicitado, compraSoli);
-                                    
-                                    
+                                    supervisorLogeado.rechazarCompra(clienteComprador, motivo, vehiculoSolicitado, compraSoli);
+
                                     System.out.println("Solicitud contestada, eliminando solicitud del registro...");
                                     supervisorLogeado.getSolicitudes().remove(i);
-                                    
 
                                 }
 
@@ -261,16 +260,239 @@ public class ConcesionariaDeAutos {
 
                     }
                     System.out.println("Digite 0 para volver al menu");
-                            Scanner sc = new Scanner(System.in);
-                            int volver = sc.nextInt();
-                            if (volver == 0) {
-                                
-                                System.out.println("Volviendo...");
-                                
-                                break;
-                            }
+                    Scanner sc = new Scanner(System.in);
+                    int volver = sc.nextInt();
+                    if (volver == 0) {
+
+                        System.out.println("Volviendo...");
+
+                        break;
+                    }
                     break;
                 case 3:
+                    System.out.println("Ingreso de nuevos vehiculos al stock");
+
+                    System.out.println("1) Automovil");
+                    System.out.println("2) Camion");
+                    System.out.println("3) Motocicleta");
+                    System.out.println("4) Tractor");
+                    System.out.println("5) Volver");
+                    System.out.println("Ingrese el tipo de vehiculo que desea agregar:");
+                    Scanner input = new Scanner(System.in);
+                    int cOpcion = input.nextInt();
+                    switch (cOpcion) {
+
+                        case 1:
+                            TipoMotor motor;
+                            boolean convertible;
+                            boolean camara;
+                            System.out.println("Ingrese la marca del vehiculo:");
+                            String marca = input.next();
+                            System.out.println("Ingrese el modelo del vehiculo: ");
+                            String modelo = input.next();
+                            System.out.println("Ingrese el año de fabricacion: ");
+                            int anioFabricacion = input.nextInt();
+                            input.nextLine();
+                            System.out.println("Ingrese el tipo de Motor: (Diesel, Gasolina)");
+                            System.out.println("1)Diesel");
+                            System.out.println("2)Gasolina");
+                            int motorOp= input.nextInt();
+                            if (motorOp==1) {
+                                motor = TipoMotor.DIESEL;
+                            } else {
+                                motor = TipoMotor.GASOLINA;
+                            }
+                            System.out.println("Ingrese el precio del vehiculo:");
+                            double precio = input.nextDouble();
+                            input.nextLine();
+
+                            System.out.println("Ingrese el kilometraje del vehiculo: ");
+                            double km = input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese el numero de asientos del vehiculo:");
+                            int numAsientos = input.nextInt();
+                            input.nextLine();
+                            System.out.println("El auto es convertible, responda con un y/n para responder Si O No:");
+                            String esConvertible = input.next();
+                            if (esConvertible.toLowerCase().equals("y")) {
+                                convertible = true;
+                            } else {
+                                convertible = false;
+                            }
+                            System.out.println("El auto tiene camara de retro, responda con un y/n para responder Si o NO:");
+                            String wCamara = input.next();
+                            if (wCamara.toLowerCase().equals("y")) {
+                                camara = true;
+                            } else {
+                                camara = false;
+                            }
+                            System.out.println("Ingrese la concesionaria del vehiculo:");
+                            String nombreConcesionaria = input.next();
+                            Vehiculo vehiculo = new Automovil(numAsientos, convertible, camara, marca, modelo, anioFabricacion, motor, precio, EstadoVehiculo.DISPONIBLE, km, nombreConcesionaria);
+                            if (!vehiculos.contains(vehiculo)) {
+                                vehiculos.add(vehiculo);
+                                System.out.println("Vehiculo agregado correctamente al stock");
+                            } else {
+                                System.out.println("Ese vehiculo ya existe en el stock de vehiculos");
+                            }
+                            break;
+                        case 2:
+                            TipoMotor motorC;
+
+                            System.out.println("Ingrese la marca del vehiculo:");
+                            marca = input.nextLine();
+                            System.out.println("Ingrese el modelo del vehiculo: ");
+                            modelo = input.nextLine();
+                            System.out.println("Ingrese el año de fabricacion: ");
+                            anioFabricacion = input.nextInt();
+                            input.nextLine();
+                            System.out.println("Ingrese el tipo de Motor: (Diesel, Gasolina)");
+                            System.out.println("1)Diesel");
+                            System.out.println("2)Gasolina");
+                            motorOp= input.nextInt();
+                            if (motorOp==1) {
+                                motor = TipoMotor.DIESEL;
+                            } else {
+                                motor = TipoMotor.GASOLINA;
+                            }
+                            System.out.println("Ingrese el numero de llantas:");
+                            int numLlantas = input.nextInt();
+                            input.nextLine();
+                            System.out.println("Ingrese el precio del vehiculo:");
+                            precio = input.nextDouble();
+                            input.nextLine();
+
+                            System.out.println("Ingrese el kilometraje del vehiculo: ");
+                            km = input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese la capacidad de carga en kg:");
+                            double cargaM = input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese el numero de ejes:");
+                            int numEjes = input.nextInt();
+                            input.nextLine();
+
+                            System.out.println("Ingrese la concesionaria del vehiculo:");
+                            nombreConcesionaria = input.nextLine();
+                            Camion camion = new Camion(cargaM, numEjes, marca, modelo, anioFabricacion, motor, numLlantas, precio, EstadoVehiculo.DISPONIBLE, km, nombreConcesionaria);
+                            if (!vehiculos.contains(camion)) {
+                                vehiculos.add(camion);
+                                System.out.println("Vehiculo agregado correctamente al stock");
+                            } else {
+                                System.out.println("Ese vehiculo ya existe en el stock de vehiculos");
+                            }
+                            break;
+                        case 3:
+
+                            System.out.println("Ingrese la marca del vehiculo:");
+                            marca = input.next();
+                            System.out.println("Ingrese el modelo del vehiculo:");
+                            modelo = input.next();
+                            System.out.println("Ingrse el año de fabricacion:");
+                            anioFabricacion = input.nextInt();
+                            input.nextLine();
+                            System.out.println("Ingrese el tipo de Motor: (Diesel, Gasolina)");
+                            System.out.println("1)Diesel");
+                            System.out.println("2)Gasolina");
+                            motorOp= input.nextInt();
+                            if (motorOp==1) {
+                                motor = TipoMotor.DIESEL;
+                            } else {
+                                motor = TipoMotor.GASOLINA;
+                            }
+                            System.out.println("Ingrese el precio del vehiculo:");
+                            precio= input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese el kilometraje del vehiculo:");
+                            km = input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese la categoria de la moto:");
+                            System.out.println("1) Deportiva ");
+                            System.out.println("2) Scooter");
+                            System.out.println("3) Todo terreno");
+                            int categoria = input.nextInt();
+                            MotoCategoria motoC=null;
+                            if(categoria==1){
+                                motoC = MotoCategoria.DEPORTIVA;
+                            }else if(categoria==2){
+                                motoC = MotoCategoria.SCOOTER;
+                            }else if(categoria==3){
+                                motoC = MotoCategoria.TODOTERRENO;
+                            }
+                            input.nextLine();
+                            System.out.println("Ingrese la concesionaria del vehiculo:");
+                            nombreConcesionaria = input.nextLine();
+                            Motocicleta motocicleta = new Motocicleta(motoC, marca, modelo,anioFabricacion,motor,precio,EstadoVehiculo.DISPONIBLE,km,nombreConcesionaria);
+                            if(!vehiculos.contains(motocicleta)){
+                                vehiculos.add(motocicleta);
+                                System.out.println("Vehiculo agregado correctamente al stock de vehiculos");
+                            }else{
+                                System.out.println("Este vehiculo ya se encuentra en el stock");
+                            }
+                            break;
+                        case 4:
+                            TipoTransmision transmision;
+                            boolean esAgricola;
+                            System.out.println("Ingrese la marca del vehiculo:");
+                            marca = input.next();
+                            System.out.println("Ingrese el modelo del vehiculo:");
+                            modelo = input.next();
+                            System.out.println("Ingrse el año de fabricacion:");
+                            anioFabricacion = input.nextInt();
+                            input.nextLine();
+                            System.out.println("Ingrese el tipo de Motor: (Diesel, Gasolina)");
+                            System.out.println("1)Diesel");
+                            System.out.println("2)Gasolina");
+                            motorOp= input.nextInt();
+                            if (motorOp==1) {
+                                motor = TipoMotor.DIESEL;
+                            } else {
+                                motor = TipoMotor.GASOLINA;
+                            }
+                            System.out.println("Ingrese el precio del vehiculo:");
+                            precio= input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese el kilometraje del vehiculo:");
+                            km = input.nextDouble();
+                            input.nextLine();
+                            System.out.println("Ingrese el tipo de transmision del tractor:");
+                            System.out.println("1) Hidraulica");
+                            System.out.println("2) Mecanica");
+                            
+                            int transOp = input.nextInt();
+
+                            if(transOp==1){
+                               transmision= TipoTransmision.HIDRAULICA;
+                            }else{
+                                transmision = TipoTransmision.MECANICA;
+                            }
+                            input.nextLine();
+                            System.out.println("El tractor es de uso agricola, ingrese y/n para escribir Si o NO:");
+                            String agricola = input.next();
+                            if(agricola.toLowerCase().equals("y")){
+                                esAgricola=true;
+                            }else{
+                                esAgricola= false;
+                            }
+                            System.out.println("Ingrese la concesionaria del vehiculo:");
+                            nombreConcesionaria = input.nextLine();
+                            Tractor tractor = new Tractor(esAgricola,transmision, marca, modelo,anioFabricacion,motor,precio,EstadoVehiculo.DISPONIBLE,km,nombreConcesionaria);
+                            if(!vehiculos.contains(tractor)){
+                                vehiculos.add(tractor);
+                                System.out.println("Vehiculo agregado correctamente al stock de vehiculos");
+                            }else{
+                                System.out.println("Este vehiculo ya se encuentra en el stock");
+                            }
+                            
+                            break;
+                        case 5:
+                            System.out.println("Volviendo...");
+                            break;
+                            
+                           
+
+                    }
+
                     break;
                 case 4:
                     System.out.println("Cerrando sesion...");
@@ -428,7 +650,7 @@ public class ConcesionariaDeAutos {
                             }
                         } else if (mensaje.getEmisor() instanceof Supervisor) {
                             System.out.println(mensaje.getMensaje());
-                            
+
                             System.out.println("Digite 0 para volver al menu");
                             Scanner sc = new Scanner(System.in);
                             int volver = sc.nextInt();
