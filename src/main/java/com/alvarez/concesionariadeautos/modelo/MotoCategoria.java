@@ -6,6 +6,6 @@ package com.alvarez.concesionariadeautos.modelo;
 
 
 public enum MotoCategoria {
-    DEPORTIVA, SCOOTER,TODOTERRENO
+    DEPORTIVA, SCOOTER,TODOTERRENO;
     
 }
