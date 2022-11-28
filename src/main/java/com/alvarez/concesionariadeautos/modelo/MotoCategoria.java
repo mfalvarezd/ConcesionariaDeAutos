@@ -4,11 +4,8 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public enum MotoCategoria {
-    DEPORTIVA, SCOOTER,TODOTERRENO;
+    DEPORTIVA, SCOOTER,TODOTERRENO
     
 }
