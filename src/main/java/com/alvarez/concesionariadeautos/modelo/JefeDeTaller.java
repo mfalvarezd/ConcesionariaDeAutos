@@ -19,6 +19,8 @@ public class JefeDeTaller extends Usuario{
     public JefeDeTaller(ArrayList<String> certificacionesTecnicas, String nombres, String apellidos, String usuario, String password) {
         super(nombres, apellidos, usuario, password);
         this.certificacionesTecnicas = certificacionesTecnicas;
+        vehiculosPorEntregar = new ArrayList<>();
+        vehiculosEnMantenimiento = new ArrayList<>();
     }
 
     public ArrayList<String> getCertificacionesTecnicas() {
