@@ -11,6 +11,9 @@ package com.alvarez.concesionariadeautos.modelo;
 //Compra
 public class Compra extends Solicitud {
     private Vendedor vendedor;
+    public Compra(){
+        super();
+    }
 
     public Compra(Usuario usuario, Vehiculo vehiculo,Vendedor vendedor) {
         super(usuario, vehiculo);

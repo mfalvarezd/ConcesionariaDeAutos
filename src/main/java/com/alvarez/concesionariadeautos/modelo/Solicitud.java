@@ -13,12 +13,16 @@ public abstract class Solicitud {
     protected Usuario usuario;
     protected Vehiculo vehiculo;
     protected EstadoSolicitud estado;
+    public Solicitud(){
+        
+    }
 
     public Solicitud(Usuario usuario, Vehiculo vehiculo) {
         this.usuario = usuario;
         this.vehiculo = vehiculo;
         this.estado=EstadoSolicitud.PENDIENTE;
     }
+    
 
     public Usuario getUsuario() {
         return usuario;

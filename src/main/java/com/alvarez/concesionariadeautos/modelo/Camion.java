@@ -12,7 +12,7 @@ public class Camion extends Vehiculo{
     private double capacidadCarga;
     private int numEjes;
 
-    public Camion(double capacidadCarga, int numEjes, String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
+    public Camion(double capacidadCarga,String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
         super(marca, modelo, anioFabricacion, tipoMotor, numLlantas, precio, estado, kilometraje, concesionaria);
         this.capacidadCarga = capacidadCarga;
         this.numEjes = numLlantas/2;

@@ -21,6 +21,9 @@ public abstract class Usuario {
     protected String password;
     protected ArrayList<Solicitud> solicitudes = new ArrayList<>();
     protected ArrayList<Mensaje> mensajes = new ArrayList<>();
+    public Usuario(){
+        
+    }
 
     public Usuario(String nombres, String apellidos, String usuario, String password) {
         this.nombres = nombres;

@@ -11,8 +11,9 @@ import java.util.Scanner;
  *
  * @author Moises Alvarez
  */
-public class JefeDeTaller extends Usuario{
-    private ArrayList<String> certificacionesTecnicas ;
+public class JefeDeTaller extends Usuario {
+
+    private ArrayList<String> certificacionesTecnicas;
     private ArrayList<Vehiculo> vehiculosPorEntregar;
     private ArrayList<Vehiculo> vehiculosEnMantenimiento;
 
@@ -49,52 +50,62 @@ public class JefeDeTaller extends Usuario{
 
     @Override
     public String mostrarInformacion() {
-        return super.mostrarInformacion()+", certificacionesTecnicas=" + certificacionesTecnicas + ", vehiculosPorEntregar=" + vehiculosPorEntregar + ", vehiculosEnMantenimiento=" + vehiculosEnMantenimiento + '}';
+        return super.mostrarInformacion() + ", certificacionesTecnicas=" + certificacionesTecnicas + ", vehiculosPorEntregar=" + vehiculosPorEntregar + ", vehiculosEnMantenimiento=" + vehiculosEnMantenimiento + '}';
     }
-    public void entregarVehiculo(Cliente usuario, Vehiculo vehiculo,Solicitud solicitud){
-        for(Vehiculo v: vehiculosPorEntregar){ 
-            if(v.equals(vehiculo)){
-                usuario.addMensaje(new MensajeConfirmacion(usuario, this,"Se le comunica que ya puede acercarse a retirar su vehiculo: "+v.mostrarInformacion(),solicitud));
-                
-            }
-       
-        }
-        this.solicitudes.remove(solicitud);
+
+    public void entregarVehiculo(Cliente cliente, Vehiculo vehiculo, Solicitud solicitud) {
+
+        cliente.addMensaje(new MensajeConfirmacion(cliente, this, "Se le comunica que ya puede acercarse a retirar su vehiculo: " + vehiculo.mostrarInformacion(), solicitud));
+        System.out.println(cliente.getVehiculos().toString());
+
     }
-    
-    public void aprobarMantenimiento(Cliente usuario, Vehiculo vehiculo,Solicitud solicitud){
+
+    public void aprobarMantenimiento(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud) {
         vehiculo.setEstadoMantenimiento(EstadoMantenimiento.ADMITIDO);
-        usuario.addMensaje(new MensajeConfirmacion(usuario,this,"Su vehiculo ha sido admitido en el taller para su mantenimiento",solicitud));
-        vehiculosEnMantenimiento.add(vehiculo);
-        this.solicitudes.remove(solicitud);
-        
-        
+        solicitud.setEstado(EstadoSolicitud.APROBADA);
+        Mantenimiento sM = (Mantenimiento) solicitud;
+
+        usuario.addMensaje(new MensajeConfirmacion(usuario, this, "Su vehiculo ha sido admitido en el taller para su mantenimiento" + calcularCosto(vehiculo, sM.getTipoMantenimiento()), solicitud));
+
+        vehiculosEnMantenimiento.add(vehiculo);//agregamos el vehiculos a la lista de vehiculos en mantenimiento que tiene el jefe de taller
+
     }
-    public void rechazarMantenimiento(Cliente usuario, String motivo,Solicitud solicitud){
-        
-        usuario.addMensaje(new MensajeConfirmacion(usuario, this,motivo,solicitud));
+
+    public void rechazarMantenimiento(Cliente usuario, String motivo, Solicitud solicitud) {
+        solicitud.setEstado(EstadoSolicitud.RECHAZADA);
+
+        usuario.addMensaje(new MensajeConfirmacion(usuario, this, motivo, solicitud));
         solicitudes.remove(solicitud);
     }
-    public void calcularCosto(Vehiculo vehiculo,TipoMantenimiento tipoMantenimiento){
+
+    public String calcularCosto(Vehiculo vehiculo, TipoMantenimiento tipoMantenimiento) {
         Scanner sc = new Scanner(System.in);
-        if(tipoMantenimiento.equals(TipoMantenimiento.PREVENTIVO)){
-            System.out.println("El mantenimiento preventivo tiene un costo de: $"+(0.10* vehiculo.getKilometraje()));
-        }else{
+        if (tipoMantenimiento.equals(TipoMantenimiento.PREVENTIVO)) {
+            return " El mantenimiento preventivo tiene un costo de: $" + (0.10 * vehiculo.getKilometraje());
+        } else {
             System.out.println("Ingrese un valor a cobrar: ");
             double costo = sc.nextDouble();
-            System.out.println("El mantenimiento de emergencia tiene un costo de: $"+costo);
-            sc.close();
+            return " El mantenimiento de emergencia tiene un costo de: $" + costo;
+
         }
     }
-    public void cambiarEstadoDelMantenimiento(Vehiculo vehiculo,EstadoMantenimiento estadoMantenimiento){
-        for(Vehiculo v: vehiculosEnMantenimiento){
-            if( v.equals(vehiculo)){
+    public int getNsolicitudesMantenimiento(){
+        int cont=0;
+        for(Solicitud s: solicitudes){
+            if(s instanceof Mantenimiento){
+                cont++;
+            }
+        }
+        return cont;
+    }
+
+    public void cambiarEstadoDelMantenimiento(Vehiculo vehiculo, EstadoMantenimiento estadoMantenimiento) {
+        for (Vehiculo v : vehiculosEnMantenimiento) {
+            if (v.equals(vehiculo)) {
                 v.setEstadoMantenimiento(estadoMantenimiento);
             }
         }
-        
+
     }
-    
-    //hola
-    
+
 }

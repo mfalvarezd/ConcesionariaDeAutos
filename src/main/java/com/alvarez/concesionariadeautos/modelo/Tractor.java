@@ -12,11 +12,11 @@ public class Tractor extends Vehiculo{
     private boolean esAgricola;
     private TipoTransmision  tipoTransmision;
 
-    public Tractor(boolean esAgricola, TipoTransmision tipoTransmision, String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor,double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
-        super(marca, modelo, anioFabricacion, TipoMotor.DIESEL, 4, precio, estado, kilometraje, concesionaria);
-        this.esAgricola = esAgricola;
-        this.tipoTransmision = tipoTransmision;
-    }
+        public Tractor(boolean esAgricola, TipoTransmision tipoTransmision, String marca, String modelo, int anioFabricacion,double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
+            super(marca, modelo, anioFabricacion, TipoMotor.DIESEL, 4, precio, estado, kilometraje, concesionaria);
+            this.esAgricola = esAgricola;
+            this.tipoTransmision = tipoTransmision;
+        }
     @Override
     public void mostrarDatos(){
         super.mostrarDatos();

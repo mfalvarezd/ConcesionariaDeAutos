@@ -13,7 +13,7 @@ public class Mantenimiento extends Solicitud{
     private TipoMantenimiento tipoMantenimiento;
     private EstadoMantenimiento estadoDeMantenimiento;
 
-    public Mantenimiento(Usuario usuario, Vehiculo vehiculo) {
+    public Mantenimiento(Usuario usuario, Vehiculo vehiculo,TipoMantenimiento tipoMantenimiento) {
         super(usuario, vehiculo);
         this.tipoMantenimiento=tipoMantenimiento;
     }
@@ -28,10 +28,14 @@ public class Mantenimiento extends Solicitud{
     public void setTipoMantenimiento(TipoMantenimiento tipoMantenimiento){
         this.tipoMantenimiento=tipoMantenimiento;
     }
+
+    public TipoMantenimiento getTipoMantenimiento() {
+        return tipoMantenimiento;
+    }
     
     @Override
     public String mostrarInformacion(){
-        return "Mantenimiento {El usuario "+ usuario+" solicita el mantenimiento " +tipoMantenimiento+ "del vehiculo "+vehiculo.mostrarInformacion();
+        return "Mantenimiento {El usuario "+ usuario.getUsuario()+" solicita el mantenimiento " +tipoMantenimiento+ " del vehiculo "+vehiculo.mostrarInformacionCliente()+"}";
     }
     
 }

@@ -15,7 +15,11 @@ public class Cliente extends Usuario{
     private String cedula;
     private String ocupacion;
     private double ingresosM;
-    private ArrayList<Vehiculo> vehiculos= new ArrayList<>();
+    private ArrayList<Vehiculo> listadeVehiculos= new ArrayList<>();
+    public Cliente(){
+        super();
+        
+    }
 
     public Cliente(String cedula, String ocupacion, double ingresosM,String nombres, String apellidos, String usuario, String password) {
         super(nombres, apellidos, usuario, password);
@@ -50,11 +54,11 @@ public class Cliente extends Usuario{
     }
 
     public ArrayList<Vehiculo> getVehiculos() {
-        return vehiculos;
+        return listadeVehiculos;
     }
 
     public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
-        this.vehiculos = vehiculos;
+        this.listadeVehiculos = vehiculos;
     }
     public Cotizacion cotizarVehiculo(Vehiculo vehiculo){
         return new Cotizacion( this, vehiculo);
@@ -63,25 +67,15 @@ public class Cliente extends Usuario{
     public Compra comprarVehiculo(Vehiculo vehiculo,Vendedor vendedor){
         return new Compra(this,vehiculo,vendedor);
     }
-    public Mantenimiento mantenerAuto(Vehiculo vehiculo){
-        return new Mantenimiento(this, vehiculo);
+    public Mantenimiento mantenerAuto(Vehiculo vehiculo,TipoMantenimiento tipoMantenimiento){
+        return new Mantenimiento(this, vehiculo,tipoMantenimiento);
     }
-    
-    @Override
-    public boolean tieneMensaje(){
-        return this.solicitudes.isEmpty();
+    public void addVehiculo(Vehiculo vehiculo){
+        this.listadeVehiculos.add(vehiculo);
     }
-    
-    /**
-     *
-     */
-    @Override
-    public void leerMensajes(){
-        
-        for(Mensaje mensaje: mensajes){
-            System.out.println(mensaje);
-        }
-    }
+
+   
+
     public boolean verificarSolicitud(Vehiculo vehiculo){
         boolean validacion=false;
         for(Solicitud solicitud: solicitudes){
@@ -98,7 +92,7 @@ public class Cliente extends Usuario{
      */
     @Override
     public String mostrarInformacion() {
-        return super.mostrarInformacion()+", cedula=" + cedula + ", ocupacion=" + ocupacion + ", ingresosM=" + ingresosM + ", vehiculos=" + vehiculos + '}';
+        return super.mostrarInformacion()+", cedula=" + cedula + ", ocupacion=" + ocupacion + ", ingresosM=" + ingresosM + ", vehiculos=" + listadeVehiculos + '}';
     }
     
     
