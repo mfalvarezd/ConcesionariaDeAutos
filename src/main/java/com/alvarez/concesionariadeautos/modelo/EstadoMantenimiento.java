@@ -4,10 +4,6 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
 public enum EstadoMantenimiento {
     ADMITIDO,ENREPARACION,ETAPAPRUEBA,DEALTA,NULL;
     

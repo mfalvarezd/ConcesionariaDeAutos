@@ -4,10 +4,6 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
 public class MensajeConfirmacion extends Mensaje{
 
     public MensajeConfirmacion(Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud) {

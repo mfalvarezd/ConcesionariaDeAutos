@@ -4,10 +4,7 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public class Camion extends Vehiculo{
     private double capacidadCarga;
     private int numEjes;

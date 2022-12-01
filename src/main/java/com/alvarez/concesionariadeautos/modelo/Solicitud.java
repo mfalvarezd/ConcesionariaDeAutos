@@ -4,10 +4,7 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public abstract class Solicitud {
     
     protected Usuario usuario;

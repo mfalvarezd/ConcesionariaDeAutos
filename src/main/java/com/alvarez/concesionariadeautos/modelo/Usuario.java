@@ -5,12 +5,7 @@
 package com.alvarez.concesionariadeautos.modelo;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
-/**
- *
- * @author Moises Alvarez
- */
 public abstract class Usuario {
 
 

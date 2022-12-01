@@ -4,10 +4,7 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public class Motocicleta extends Vehiculo{
     private MotoCategoria categoria;
 

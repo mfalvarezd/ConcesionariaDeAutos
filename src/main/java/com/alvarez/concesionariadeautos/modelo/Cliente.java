@@ -7,10 +7,6 @@ package com.alvarez.concesionariadeautos.modelo;
 import java.util.ArrayList;
 
 
-/**
- *
- * @author Moises Alvarez
- */
 public class Cliente extends Usuario{
     private String cedula;
     private String ocupacion;

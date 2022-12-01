@@ -4,10 +4,6 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
 public class Vendedor extends Usuario {
 
     private String id;

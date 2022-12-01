@@ -4,10 +4,7 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public enum EstadoSolicitud {
     PENDIENTE,APROBADA, RECHAZADA;
     

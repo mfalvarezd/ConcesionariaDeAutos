@@ -4,10 +4,7 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public class Mantenimiento extends Solicitud{
     
     private TipoMantenimiento tipoMantenimiento;

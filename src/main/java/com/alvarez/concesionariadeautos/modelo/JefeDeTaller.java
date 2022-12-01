@@ -7,10 +7,7 @@ package com.alvarez.concesionariadeautos.modelo;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public class JefeDeTaller extends Usuario {
 
     private ArrayList<String> certificacionesTecnicas;

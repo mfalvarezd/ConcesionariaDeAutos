@@ -4,10 +4,7 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-/**
- *
- * @author Moises Alvarez
- */
+
 public class Cotizacion extends Solicitud{
 
     public Cotizacion(Usuario usuario, Vehiculo vehiculo) {
