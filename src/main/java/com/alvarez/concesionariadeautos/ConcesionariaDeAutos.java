@@ -168,20 +168,24 @@ public class ConcesionariaDeAutos {
                             System.out.println((i + 1) + ") " + jefeLogeado.getVehiculosPorEntregar().get(i).getInformacionParaCliente() + " Listo para entrega");
                         }
                         System.out.println("Seleccione el vehiculo a entregar:");
+                        System.out.println("Digite 0 para volver:");
 
                         int indxV = opcionesJefe.nextInt();// posicion del vehiculo en la lista
+                        if (indxV == 0) {
+                            System.out.println("Volviendo...");
+                            break;
+                        }
 
                         Vehiculo vEntrega = jefeLogeado.getVehiculosPorEntregar().get(indxV - 1);//recuperamos el vehiculo que va hacer enviado para entrega
-                        for(int i =0 ; i<jefeLogeado.getSolicitudes().size();i++){
-                            if(jefeLogeado.getSolicitudes().get(i).getVehiculo().equals(vEntrega)){
-                               jefeLogeado.entregarVehiculo(vEntrega.getPropietario(), vEntrega,jefeLogeado.getSolicitudes().get(i));//entregamos el vehiculo al cliente
-                               jefeLogeado.getSolicitudes().remove(i);// eliminamos la solicitud del sistema ya que ya fue entregado
+                        for (int i = 0; i < jefeLogeado.getSolicitudes().size(); i++) {
+                            if (jefeLogeado.getSolicitudes().get(i).getVehiculo().equals(vEntrega)) {
+                                jefeLogeado.entregarVehiculo(vEntrega.getPropietario(), vEntrega, jefeLogeado.getSolicitudes().get(i));//entregamos el vehiculo al cliente
+                                jefeLogeado.getSolicitudes().remove(i);// eliminamos la solicitud del sistema ya que ya fue entregado
                             }
                         }
-                        
 
                         System.out.println("Vehiculo listo enviado para entrega...");
-                       
+
                         jefeLogeado.getVehiculosPorEntregar().remove(vEntrega);//eliminamos el vehiculo de la lista de vehiculos listo para entrega
 
                     } else {
@@ -210,7 +214,7 @@ public class ConcesionariaDeAutos {
                     for (int i = 0; i < jefeLogeado.getSolicitudes().size(); i++) {
                         if (jefeLogeado.getSolicitudes().get(i) instanceof Mantenimiento) {
                             Mantenimiento m = (Mantenimiento) jefeLogeado.getSolicitudes().get(i);
-                            if (m.getEstadoDeMantenimiento() == null && m.getVehiculo().getEstado()==null) {
+                            if (m.getEstadoDeMantenimiento() == null && m.getVehiculo().getEstado() == null) {
                                 solicitudesDeMantenimiento.add(m);
 
                             }
@@ -255,7 +259,7 @@ public class ConcesionariaDeAutos {
                                 System.out.println("Intente otro vehiculo");
                             } else if (vEntrega.getEstado() == EstadoVehiculo.ENTREGADO) {
                                 System.out.println("El vehicho ya ha sido agregado a la lista de vehiculos por entregar, intente otro vehiculo");
-                                jefeLogeado.getSolicitudes().remove(solicitudesDeMantenimiento.get(indxV-1));
+                                jefeLogeado.getSolicitudes().remove(solicitudesDeMantenimiento.get(indxV - 1));
                             } else {
                                 System.out.println("Vehiculo agregado a la lista de vehiculos listos para entrega");
                                 vEntrega.setEstado(EstadoVehiculo.ENTREGADO);
@@ -263,8 +267,7 @@ public class ConcesionariaDeAutos {
 
                                 jefeLogeado.getVehiculosEnMantenimiento().remove(solicitudesDeMantenimiento.get(indxV - 1).getVehiculo());// Eliminamos el vehiculo de la lista de vehiculos En Mantenimiento porque ya fue entregado
                                 solicitudesDeMantenimiento.remove(indxV - 1);
-                                
-                                
+
                                 System.out.println("Volviendo...");
 
                                 break;
@@ -303,7 +306,12 @@ public class ConcesionariaDeAutos {
 
                                     }
                                     System.out.println("Seleccione el vehiculo a admitir");
+                                    System.out.println("Digite 0 para cancelar");
                                     indxV = entrada.nextInt();
+                                    if(indxV==0){
+                                        System.out.println("Saliendo....");
+                                        break;
+                                    }
                                     Vehiculo vAdmitir = solicitudesNoAdmitidas.get(indxV - 1).getVehiculo();
                                     if (vAdmitir.getConcesionaria().equals(CONCESIONARIA)) {
                                         if (vAdmitir.getEstadoMantenimiento() == null) {
@@ -339,6 +347,10 @@ public class ConcesionariaDeAutos {
                                     }
                                     System.out.println("Seleccione el vehiculo a Rechazar");
                                     indxV = entrada.nextInt();
+                                    if(indxV==0){
+                                        System.out.println("Saliendo....");
+                                        break;
+                                    }
                                     Scanner entradaT = new Scanner(System.in);
                                     System.out.println("Ingrese el motivo del rechazo:");
                                     String motivo = entradaT.nextLine();
@@ -467,7 +479,7 @@ public class ConcesionariaDeAutos {
                                     break;
                                 } else {
                                     Cliente clienteComprador = (Cliente) compraSoli.getUsuario();
-                                    
+
                                     Vendedor vendedorDelVehiculo = (Vendedor) compraSoli.getVendedor();
                                     Vehiculo vehiculoSolicitado = compraSoli.getVehiculo();
                                     vehiculoSolicitado.setPropietario(clienteComprador);
@@ -475,7 +487,7 @@ public class ConcesionariaDeAutos {
                                     supervisorLogeado.aprobarCompra(clienteComprador, vehiculoSolicitado, compraSoli);
                                     jefeDeTaller.addSolicitud(compraSoli);
                                     jefeDeTaller.getVehiculosPorEntregar().add(vehiculoSolicitado);
-                                    vendedorDelVehiculo.aggVentasAprobadas();
+                                    supervisorLogeado.aggVentasAprobadas(vendedorDelVehiculo);//le sumamos +1 al numero de vehiculos que ha vendido el vendedor
                                     System.out.println("Solicitud contestada, eliminando solicitud del registro...");
                                     supervisorLogeado.getSolicitudes().remove(i);
 
@@ -779,9 +791,12 @@ public class ConcesionariaDeAutos {
             System.out.println("1) Cotizar auto del Stock de vehiculos");
             System.out.println("2) Revisar Solicitudes pendientes");
             System.out.println("3) Revisar Mensajes");
-            System.out.println("4) Realizar Mantenimiento");
+            if (esClienteHabitual(clienteLogeado)) {
+                
+                System.out.println("4) Realizar Mantenimiento");
+            }
 
-            System.out.println("5) Salir");
+            System.out.println("0) Salir");
             System.out.println("Ingrese una de las opciones (1-5):");
             opciones = opcionesCliente.nextInt();
             switch (opciones) {
@@ -856,7 +871,7 @@ public class ConcesionariaDeAutos {
                             System.out.println("Eliminando mensaje...");
 
                             clienteLogeado.getMensajes().remove(mensaje);// eliminamos el mensaje del imbox del cliente para evitar mensajes acumulados
-                            clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());// eliminamos la solicitud del cliente ya que ya feu rechazada
+                            clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());// eliminamos la solicitud del cliente ya que ya fue rechazada
                             System.out.print("Digite 0 para volver al menu:");
 
                             Scanner entradaMensaje = new Scanner(System.in);
@@ -902,7 +917,7 @@ public class ConcesionariaDeAutos {
                                     break;
 
                             }
-                            
+
                         } else if (mensaje.getEmisor() instanceof Supervisor) {
                             System.out.println(mensaje.getMensaje());// mostramos el mensaje que envia supervisor
 
@@ -1039,11 +1054,11 @@ public class ConcesionariaDeAutos {
                     }
                     break;
 
-                case 5:
+                case 0:
                     salir = true;
                     break;
                 default:
-                    System.out.println("Solo opciones del 1 al 5");
+                    System.out.println("Solo opciones del 0 al 4");
                     break;
             }
         }
@@ -1198,7 +1213,7 @@ public class ConcesionariaDeAutos {
         listaUsuarios.add(new Vendedor("44468", "Carlos Julio", "Hernandez Zamora", "chernandez", "123"));
         ArrayList<Vehiculo> vCliente = new ArrayList<>();
         vCliente.add(new Automovil(5, false, true, "Honda", "Civic", 2020, TipoMotor.DIESEL, 18500, EstadoVehiculo.DISPONIBLE, 2.5, CONCESIONARIA));
-        listaUsuarios.add(new Cliente("0943156043","Jefe de Sistemas",4000,"Moises Fernando","Alvarez Orellana","malvarez","123",vCliente));
+        listaUsuarios.add(new Cliente("0943156043", "Jefe de Sistemas", 4000, "Moises Fernando", "Alvarez Orellana", "malvarez", "123", vCliente));
         listaUsuarios.add(new Cliente("0943675982", "Jefa de Ventas", 1800, "Karla Andrea", "Rivera Vera", "krivera", "123"));
         listaUsuarios.add(new Cliente("0981679527", "Supervisor de Sistemas", 2500, "Winston Humberto", "Leon Gutierrez", "wleon", "123"));
         ArrayList<String> certificacionesAcademicas = new ArrayList<>();
@@ -1214,7 +1229,7 @@ public class ConcesionariaDeAutos {
 
     public static ArrayList<Vehiculo> cargarVehiculos() {
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
-        
+
         vehiculos.add(new Automovil(4, false, true, "Chevrolet", "Aveo", 2021, TipoMotor.DIESEL, 21000, EstadoVehiculo.DISPONIBLE, 0, CONCESIONARIA));
         vehiculos.add(new Automovil(5, false, true, "Nissan", "xZ", 2020, TipoMotor.DIESEL, 18500, EstadoVehiculo.DISPONIBLE, 2.5, CONCESIONARIA));
         vehiculos.add(new Tractor(false, TipoTransmision.HIDRAULICA, "Caterpillar", "Oruga", 2019, 10900.00, EstadoVehiculo.DISPONIBLE, 0.00, CONCESIONARIA));
