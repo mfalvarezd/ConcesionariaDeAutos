@@ -27,6 +27,16 @@ public class Cliente extends Usuario{
         this.ocupacion = ocupacion;
         this.ingresosM = ingresosM;
 
+    }public Cliente(String cedula, String ocupacion, double ingresosM,String nombres, String apellidos, String usuario, String password,ArrayList<Vehiculo> lista) {
+        super(nombres, apellidos, usuario, password);
+        this.cedula = cedula;
+        this.ocupacion = ocupacion;
+        this.ingresosM = ingresosM;
+        this.listadeVehiculos=lista;
+        for(Vehiculo v: listadeVehiculos){
+            v.setPropietario(this);
+        }
+
     }
 
     public String getCedula() {

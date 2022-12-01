@@ -10,6 +10,6 @@ package com.alvarez.concesionariadeautos.modelo;
  */
 public enum EstadoVehiculo {
     
-    SOLICITADO, DISPONIBLE,NODISPONIBLE;
+    SOLICITADO, DISPONIBLE,NODISPONIBLE,ENTREGADO;
     
 }

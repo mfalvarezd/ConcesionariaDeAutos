@@ -16,6 +16,7 @@ public class Mantenimiento extends Solicitud{
     public Mantenimiento(Usuario usuario, Vehiculo vehiculo,TipoMantenimiento tipoMantenimiento) {
         super(usuario, vehiculo);
         this.tipoMantenimiento=tipoMantenimiento;
+        
     }
 
     public EstadoMantenimiento getEstadoDeMantenimiento() {

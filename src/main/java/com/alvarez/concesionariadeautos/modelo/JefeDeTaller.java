@@ -53,15 +53,15 @@ public class JefeDeTaller extends Usuario {
         return super.mostrarInformacion() + ", certificacionesTecnicas=" + certificacionesTecnicas + ", vehiculosPorEntregar=" + vehiculosPorEntregar + ", vehiculosEnMantenimiento=" + vehiculosEnMantenimiento + '}';
     }
 
-    public void entregarVehiculo(Cliente cliente, Vehiculo vehiculo, Solicitud solicitud) {
+    public void entregarVehiculo(Cliente cliente, Vehiculo vehiculo,Solicitud solicitud) {
 
-        cliente.addMensaje(new MensajeConfirmacion(cliente, this, "Se le comunica que ya puede acercarse a retirar su vehiculo: " + vehiculo.mostrarInformacion(), solicitud));
+        cliente.addMensaje(new MensajeConfirmacion(cliente, this, "Se le comunica que ya puede acercarse a retirar su vehiculo: " + vehiculo.mostrarInformacion(),solicitud));
         System.out.println(cliente.getVehiculos().toString());
 
     }
 
     public void aprobarMantenimiento(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud) {
-        vehiculo.setEstadoMantenimiento(EstadoMantenimiento.ADMITIDO);
+        
         solicitud.setEstado(EstadoSolicitud.APROBADA);
         Mantenimiento sM = (Mantenimiento) solicitud;
 

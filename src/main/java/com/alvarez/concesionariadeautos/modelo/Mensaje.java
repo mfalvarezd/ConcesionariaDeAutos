@@ -15,10 +15,14 @@ public abstract class Mensaje {
     public Solicitud solicitud;
 
     public Mensaje(Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud) {
+        this(receptor,emisor,mensaje);
+        this.solicitud=solicitud;
+    }
+     public Mensaje(Usuario receptor, Usuario emisor, String mensaje) {
         this.receptor = receptor;
         this.emisor = emisor;
         this.mensaje = mensaje;
-        this.solicitud=solicitud;
+        
     }
 
     public Usuario getReceptor() {

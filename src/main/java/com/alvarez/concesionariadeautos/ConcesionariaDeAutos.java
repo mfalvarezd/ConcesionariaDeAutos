@@ -172,19 +172,17 @@ public class ConcesionariaDeAutos {
                         int indxV = opcionesJefe.nextInt();// posicion del vehiculo en la lista
 
                         Vehiculo vEntrega = jefeLogeado.getVehiculosPorEntregar().get(indxV - 1);//recuperamos el vehiculo que va hacer enviado para entrega
-
-                        for (int i = 0; i < jefeLogeado.getSolicitudes().size(); i++) {// verificamos que ese vehiculo exista en la lista de solicitudes que tiene el jefe para saber a quien entregarle el vehiculo
-
-                            if (vEntrega.equals(jefeLogeado.getSolicitudes().get(i).getVehiculo())) {
-                                Cliente cliente = (Cliente) jefeLogeado.getSolicitudes().get(i).getUsuario();//recuperamos cl cliente que genero la solicitud de compra que fue aprobada por el supervisor
-
-                                jefeLogeado.entregarVehiculo(cliente, vEntrega, jefeLogeado.getSolicitudes().get(i));//entregamos el vehiculo al cliente
-                                System.out.println("Vehiculo listo enviado para entrega...");
-                                jefeLogeado.getSolicitudes().remove(i);//eliminamos la solicitud ya resuelta
-                                jefeLogeado.getVehiculosPorEntregar().remove(vEntrega);//eliminamos el vehiculo de la lista de vehiculos listo para entrega
-
+                        for(int i =0 ; i<jefeLogeado.getSolicitudes().size();i++){
+                            if(jefeLogeado.getSolicitudes().get(i).getVehiculo().equals(vEntrega)){
+                               jefeLogeado.entregarVehiculo(vEntrega.getPropietario(), vEntrega,jefeLogeado.getSolicitudes().get(i));//entregamos el vehiculo al cliente
+                               jefeLogeado.getSolicitudes().remove(i);// eliminamos la solicitud del sistema ya que ya fue entregado
                             }
                         }
+                        
+
+                        System.out.println("Vehiculo listo enviado para entrega...");
+                       
+                        jefeLogeado.getVehiculosPorEntregar().remove(vEntrega);//eliminamos el vehiculo de la lista de vehiculos listo para entrega
 
                     } else {
                         System.out.println("No tiene vehiculos listo para entrega");// esto solo se ejecuta si el jefeDeTaller no tienen ningun vehiculo en su lista de vehiculos para entrega
@@ -197,8 +195,8 @@ public class ConcesionariaDeAutos {
                     }
                     break;
                 case 2:
-                    if (jefeLogeado.getNsolicitudesMantenimiento()==0) {// esto se ejectua si el jefeDeTaller no tiene ninguna solicitud
-                        
+                    if (jefeLogeado.getNsolicitudesMantenimiento() == 0) {// esto se ejectua si el jefeDeTaller no tiene ninguna solicitud
+
                         System.out.println("No tiene solicitudes nuevas en el taller");
                         System.out.println("Seleccione 0 para volver:");
                         int opcion = opcionesJefe.nextInt();
@@ -207,15 +205,20 @@ public class ConcesionariaDeAutos {
                             break;
                         }
                     }
-                    //falta mejorar esta logica!!!!!!
+
+                    ArrayList<Mantenimiento> solicitudesDeMantenimiento = new ArrayList<>();
                     for (int i = 0; i < jefeLogeado.getSolicitudes().size(); i++) {
-                        if (jefeLogeado.getSolicitudes().get(i) instanceof Mantenimiento && !jefeLogeado.getSolicitudes().get(i).getEstado().equals(EstadoSolicitud.APROBADA)) {
-                            
-                            System.out.println(jefeLogeado.getSolicitudes().get(i).mostrarInformacion() + " Estado: " + jefeLogeado.getSolicitudes().get(i).getEstado());
+                        if (jefeLogeado.getSolicitudes().get(i) instanceof Mantenimiento) {
+                            Mantenimiento m = (Mantenimiento) jefeLogeado.getSolicitudes().get(i);
+                            if (m.getEstadoDeMantenimiento() == null && m.getVehiculo().getEstado()==null) {
+                                solicitudesDeMantenimiento.add(m);
+
+                            }
 
                         }
 
                     }
+
                     System.out.println("Seleccione 1 para agregar vehiculos a listos para entrega");
                     System.out.println("Seleccione 2 para admitir vehiculos al taller");
                     System.out.println("Seleccione 3 para cambiar el estado de Mantenimiento de un vehiculo");
@@ -225,83 +228,149 @@ public class ConcesionariaDeAutos {
                     int opM = entrada.nextInt();
                     switch (opM) {
                         case 1:
-                            for (int i = 0; i < jefeLogeado.getSolicitudes().size(); i++) {
-                                if (jefeLogeado.getSolicitudes().get(i) instanceof Mantenimiento) {
-                                    Mantenimiento sMantenimiento = (Mantenimiento) jefeLogeado.getSolicitudes().get(i);
-                                    System.out.println((i + 1) + ") " + jefeLogeado.getSolicitudes().get(i).getVehiculo().mostrarInformacion());
-                                    System.out.println("Seleccione 1 si desea agregar el vehiculo a listos para entrega:");
-                                    System.out.println("Seleccione 0 si desea volver al menu anterior");
-                                    int indxV = entrada.nextInt();
-                                    Vehiculo vEntrega = sMantenimiento.getVehiculo();
-                                    if (indxV == 0) {
-                                        System.out.println("Volviendo....");
-                                        break;
-                                    } else if (!sMantenimiento.getVehiculo().getEstadoMantenimiento().equals(EstadoMantenimiento.ADMITIDO) ) {
-                                        System.out.println("El vehiculo no puede ser dado de alta ya que sigue en mantenimiento ");
-                                        System.out.println("Volviendo...");
-                                        break;
+                            if (solicitudesDeMantenimiento.size() == 0) {
+                                System.out.println("No tiene vehiculos disponibles para enviar para entrega");
+                                break;
+                            }
 
-                                    } else {
-                                        System.out.println("Vehiculo agregado a la lista de vehiculos listos para entrega");
-                                        jefeLogeado.getVehiculosPorEntregar().add(vEntrega);
-                                        System.out.println("Volviendo...");
-                                        break;
+                            for (int i = 0; i < solicitudesDeMantenimiento.size(); i++) {
+                                System.out.println((i + 1) + ") " + solicitudesDeMantenimiento.get(i).getVehiculo().mostrarInformacion() + " Estado: " + solicitudesDeMantenimiento.get(i).getEstado());
+                            }
 
-                                    }
+                            System.out.println("Seleccione el vehiculo a agregar a la lista de vehiculos para entrega");
+                            System.out.println("Seleccione 0 si desea volver al menu anterior");
+                            int indxV = entrada.nextInt();
+                            if (indxV == 0) {
+                                System.out.println("Volviendo....");
+                                break;
+                            }
+                            Vehiculo vEntrega = solicitudesDeMantenimiento.get(indxV - 1).getVehiculo();
+                            if (vEntrega.getEstadoMantenimiento() == null) {
+                                System.out.println("El vehiculo aun no ha sido admitido al taller");
+                                System.out.println("Volviendo...");
+                                break;
 
-                                }
+                            } else if (vEntrega.getEstadoMantenimiento() != EstadoMantenimiento.DEALTA) {
+                                System.out.println("El vehicula no ha sido dado de alta");
+                                System.out.println("Intente otro vehiculo");
+                            } else if (vEntrega.getEstado() == EstadoVehiculo.ENTREGADO) {
+                                System.out.println("El vehicho ya ha sido agregado a la lista de vehiculos por entregar, intente otro vehiculo");
+                                jefeLogeado.getSolicitudes().remove(solicitudesDeMantenimiento.get(indxV-1));
+                            } else {
+                                System.out.println("Vehiculo agregado a la lista de vehiculos listos para entrega");
+                                vEntrega.setEstado(EstadoVehiculo.ENTREGADO);
+                                jefeLogeado.getVehiculosPorEntregar().add(vEntrega);
+
+                                jefeLogeado.getVehiculosEnMantenimiento().remove(solicitudesDeMantenimiento.get(indxV - 1).getVehiculo());// Eliminamos el vehiculo de la lista de vehiculos En Mantenimiento porque ya fue entregado
+                                solicitudesDeMantenimiento.remove(indxV - 1);
+                                
+                                
+                                System.out.println("Volviendo...");
+
+                                break;
 
                             }
 
                             break;
                         case 2:
-                            for (int i = 0; i < jefeLogeado.getSolicitudes().size(); i++) {
-                                if (jefeLogeado.getSolicitudes().get(i) instanceof Mantenimiento && jefeLogeado.getSolicitudes().get(i).getEstado().equals(EstadoSolicitud.PENDIENTE)) {
-                                    Mantenimiento sMantenimiento = (Mantenimiento) jefeLogeado.getSolicitudes().get(i);
-                                    System.out.println((i + 1) + ") " + jefeLogeado.getSolicitudes().get(i).getVehiculo().mostrarInformacion());
-                                    System.out.println("Seleccione 1 si desea admitir al taller");
-                                    System.out.println("Seleccione 2 si desea rechazar el vehiculo");
-                                    System.out.println("Seleccione 3 para volver al menu anterior");
-                                    int indxV = entrada.nextInt();
-                                    Vehiculo vAdmitir = sMantenimiento.getVehiculo();
-                                    if (indxV == 3) {
-                                        System.out.println("Volviendo....");
-                                        break;
-                                    } else if (!(sMantenimiento.getVehiculo().getConcesionaria().equals(CONCESIONARIA)) && indxV == 1) {
+                            ArrayList<Mantenimiento> solicitudesNoAdmitidas = new ArrayList<>();
+                            for (Mantenimiento m : solicitudesDeMantenimiento) {
+                                if (m.getEstadoDeMantenimiento() != EstadoMantenimiento.ADMITIDO) {
+                                    solicitudesNoAdmitidas.add(m);
+                                }
+                            }
+                            if (solicitudesNoAdmitidas.size() == 0) {
+                                System.out.println("No tiene nuevas solicitudes");
+                                System.out.println("Volviendo...");
+                                break;
+                            }
+                            System.out.println("\tSolicitudes");
+                            for (int i = 0; i < solicitudesNoAdmitidas.size(); i++) {
+                                System.out.println((i + 1) + ") " + solicitudesNoAdmitidas.get(i).mostrarInformacion());
+
+                            }
+                            System.out.println("Seleccione 1 si desea admitir un vehiculo al taller");
+                            System.out.println("Seleccione 2 si desea rechazar  solicitudes de Mantenimiento");
+                            System.out.println("Seleccione 3 para volver al menu anterior:");
+
+                            indxV = entrada.nextInt();
+
+                            switch (indxV) {
+                                case 1:
+
+                                    for (int i = 0; i < solicitudesNoAdmitidas.size(); i++) {
+                                        System.out.println((i + 1) + ") " + solicitudesNoAdmitidas.get(i).mostrarInformacion());
+
+                                    }
+                                    System.out.println("Seleccione el vehiculo a admitir");
+                                    indxV = entrada.nextInt();
+                                    Vehiculo vAdmitir = solicitudesNoAdmitidas.get(indxV - 1).getVehiculo();
+                                    if (vAdmitir.getConcesionaria().equals(CONCESIONARIA)) {
+                                        if (vAdmitir.getEstadoMantenimiento() == null) {
+                                            System.out.println("Vehiculo admitido al taller");
+                                            vAdmitir.setEstadoMantenimiento(EstadoMantenimiento.ADMITIDO);
+                                            jefeLogeado.aprobarMantenimiento((Cliente) solicitudesNoAdmitidas.get(indxV - 1).getUsuario(), vAdmitir, solicitudesNoAdmitidas.get(indxV - 1));
+
+                                            System.out.println("Volviendo...");
+
+                                            solicitudesNoAdmitidas.remove(indxV - 1);//eliminamos la solicitud de la lista de vehiculos que no han sido admitidos
+
+                                            break;
+
+                                        } else if (vAdmitir.getEstado() == EstadoVehiculo.ENTREGADO) {
+                                            System.out.println("Este vehiculo ya ha sido agregado a la lista de entrega");
+                                        } else {
+                                            System.out.println("El vehicula ya ha sido admitido");
+                                            System.out.println("Intente otro vehiculo");
+
+                                        }
+
+                                    } else {
                                         System.out.println("El vehiculo no puede ser admitido porque no pertenece a " + CONCESIONARIA);
-                                        jefeLogeado.rechazarMantenimiento((Cliente) sMantenimiento.getUsuario(), "El vehiculo no puede ser admitido porque no pertenece a " + CONCESIONARIA, sMantenimiento);
-                                        System.out.println("Volviendo...");
-                                        break;
-
-                                    } else if ((sMantenimiento.getVehiculo().getConcesionaria().equals(CONCESIONARIA)) && indxV == 1) {
-                                        System.out.println("Vehiculo admitido al taller");
-                                        jefeLogeado.aprobarMantenimiento((Cliente) sMantenimiento.getUsuario(), vAdmitir, sMantenimiento);
-
-                                        System.out.println("Volviendo...");
-                                        break;
-
-                                    } else if (indxV == 2) {
-                                        jefeLogeado.rechazarMantenimiento((Cliente) sMantenimiento.getUsuario(), "El vehiculo no puede ser admitido porque no pertenece a " + CONCESIONARIA, sMantenimiento);
+                                        jefeLogeado.rechazarMantenimiento((Cliente) solicitudesNoAdmitidas.get(indxV - 1).getUsuario(), "El vehiculo no puede ser admitido porque no pertenece a " + CONCESIONARIA, solicitudesNoAdmitidas.get(indxV - 1));
                                         System.out.println("Volviendo...");
                                         break;
                                     }
+                                    break;
+                                case 2:
+                                    for (int i = 0; i < solicitudesNoAdmitidas.size(); i++) {
+                                        System.out.println((i + 1) + ") " + solicitudesNoAdmitidas.get(i).mostrarInformacion());
 
-                                }
-
+                                    }
+                                    System.out.println("Seleccione el vehiculo a Rechazar");
+                                    indxV = entrada.nextInt();
+                                    Scanner entradaT = new Scanner(System.in);
+                                    System.out.println("Ingrese el motivo del rechazo:");
+                                    String motivo = entradaT.nextLine();
+                                    jefeLogeado.rechazarMantenimiento((Cliente) solicitudesNoAdmitidas.get(indxV - 1).getUsuario(), motivo, solicitudesNoAdmitidas.get(indxV - 1));
+                                    System.out.println("Volviendo...");
+                                    break;
+                                case 3:
+                                    System.out.println("Volviendo....");
+                                    break;
                             }
 
                             break;
                         case 3:
+                            if (jefeLogeado.getVehiculosEnMantenimiento().size() == 0) {
+                                System.out.println("No tiene vehiculos en mantenimiento actualmente");
+                                System.out.println("Seleccione 0 para volver");
+                                indxV = opcionesJefe.nextInt();
+                                if (indxV == 0) {
+                                    System.out.println("Volviendo...");
+                                    break;
+                                }
+                            }
                             for (int i = 0; i < jefeLogeado.getVehiculosEnMantenimiento().size(); i++) {
                                 System.out.println((i + 1) + ") " + jefeLogeado.getVehiculosEnMantenimiento().get(i).getInformacionParaCliente() + " ESTADO: " + jefeLogeado.getVehiculosEnMantenimiento().get(i).getEstadoMantenimiento());
                             }
                             System.out.println("Seleccione el vehiculo que desea cambiar su estado de mantenimiento: ");
                             System.out.println("Seleccione 0 para volver");
-                            int indxV = opcionesJefe.nextInt();
+                            indxV = opcionesJefe.nextInt();
                             if (indxV == 0) {
                                 System.out.println("Volviendo...");
                                 break;
-                            } else if (indxV > 0 && indxV < jefeLogeado.getVehiculosEnMantenimiento().size()) {
+                            } else if (indxV > 0) {
                                 System.out.println("Seleccione el estado a cambiar:");
                                 System.out.println("1) En Reparacion");
                                 System.out.println("2) En Estapa de Prueba");
@@ -398,8 +467,10 @@ public class ConcesionariaDeAutos {
                                     break;
                                 } else {
                                     Cliente clienteComprador = (Cliente) compraSoli.getUsuario();
+                                    
                                     Vendedor vendedorDelVehiculo = (Vendedor) compraSoli.getVendedor();
                                     Vehiculo vehiculoSolicitado = compraSoli.getVehiculo();
+                                    vehiculoSolicitado.setPropietario(clienteComprador);
 
                                     supervisorLogeado.aprobarCompra(clienteComprador, vehiculoSolicitado, compraSoli);
                                     jefeDeTaller.addSolicitud(compraSoli);
@@ -583,7 +654,7 @@ public class ConcesionariaDeAutos {
                             marca = input.next();
                             System.out.println("Ingrese el modelo del vehiculo:");
                             modelo = input.next();
-                            System.out.println("Ingrse el año de fabricacion:");
+                            System.out.println("Ingrese el año de fabricacion:");
                             anioFabricacion = input.nextInt();
                             input.nextLine();
                             System.out.println("Ingrese el tipo de Motor: (Diesel, Gasolina)");
@@ -710,8 +781,8 @@ public class ConcesionariaDeAutos {
             System.out.println("3) Revisar Mensajes");
             System.out.println("4) Realizar Mantenimiento");
 
-            System.out.println("0) Salir");
-            System.out.println("Ingrese una de las opciones: solo el numero de las opciones mostradas:");
+            System.out.println("5) Salir");
+            System.out.println("Ingrese una de las opciones (1-5):");
             opciones = opcionesCliente.nextInt();
             switch (opciones) {
                 case 1:
@@ -831,6 +902,7 @@ public class ConcesionariaDeAutos {
                                     break;
 
                             }
+                            
                         } else if (mensaje.getEmisor() instanceof Supervisor) {
                             System.out.println(mensaje.getMensaje());// mostramos el mensaje que envia supervisor
 
@@ -846,24 +918,53 @@ public class ConcesionariaDeAutos {
 
                         } else if (mensaje.getEmisor() instanceof JefeDeTaller) {
                             System.out.println(mensaje.getMensaje());//Mostramos el mensaje
-                            System.out.println("Digite 1 para recoger el vehiculo");
-                            System.out.println("Digite 0 para volver al menu");
-                            op = opcionesCliente.nextInt();
-                            if (op == 0) {
-                                
-                                System.out.println("Volviendo...");
-                                
-                                break;
+                            if (mensaje.getSolicitud() instanceof Mantenimiento) {
+                                System.out.println("Digite 1 para aceptar");
+                                System.out.println("Digite 0 para volver:");
+                                mensaje.getSolicitud().getVehiculo().setEstado(null);
+                                mensaje.getSolicitud().getVehiculo().setEstadoMantenimiento(null);
+                                op = opcionesCliente.nextInt();
+                                if (op == 0) {
 
-                            } else {
-                                System.out.println("Auto recogido, agregado a su lista de vehiculos");
-                                System.out.println("Mensaje leido eliminando mensaje...");
-                                System.out.println("Volviendo...");
-                                clienteLogeado.addVehiculo(mensaje.getSolicitud().getVehiculo());
-                                clienteLogeado.getMensajes().remove(mensaje);//eliminamos el mensaje ya leido
-                                clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());//eliminamos la solicitud de compra que ya fue resulta en su totalidad
-                                break;
+                                    System.out.println("Volviendo...");
+
+                                    break;
+
+                                } else {
+                                    System.out.println("Mensaje leido");
+                                    System.out.println("Volviendo al menu...");
+                                    clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());
+                                    clienteLogeado.getMensajes().remove(mensaje);
+                                    break;
+                                }
+
+                            } else if (mensaje instanceof MensajeConfirmacion) {
+                                System.out.println("Digite 1 para recoger el vehiculo");
+                                System.out.println("Digite 0 para volver al menu");
+                                op = opcionesCliente.nextInt();
+                                if (op == 0) {
+
+                                    System.out.println("Volviendo...");
+
+                                    break;
+
+                                } else {
+                                    System.out.println("Auto recogido, agregado a su lista de vehiculos");
+                                    System.out.println("Mensaje leido eliminando mensaje...");
+                                    System.out.println("Volviendo...");
+                                    Vehiculo vCliente = mensaje.getSolicitud().getVehiculo();
+                                    vCliente.setPropietario(clienteLogeado);
+                                    vCliente.setEstado(null);
+                                    vCliente.setEstadoMantenimiento(null);
+                                    clienteLogeado.addVehiculo(vCliente);
+                                    clienteLogeado.getMensajes().remove(mensaje);//eliminamos el mensaje ya leido
+                                    clienteLogeado.getSolicitudes().remove(mensaje.getSolicitud());//eliminamos la solicitud de compra que ya fue resulta en su totalidad
+                                    vehiculos.remove(vCliente); // eliminamos el vehiculo de la lista de vehiculos de la empresa
+                                    break;
+                                }
+
                             }
+
                         }
 
                     }
@@ -880,7 +981,7 @@ public class ConcesionariaDeAutos {
                             break;
                         }
                     }
-                    
+
                     System.out.println("Tipo de Mantenimiento");
                     System.out.println("1) Mantenimiento Preventivo");
                     System.out.println("2) Mantenimiento Emergente");
@@ -889,7 +990,7 @@ public class ConcesionariaDeAutos {
                     int opcionesMantenimiento = opcionesCliente.nextInt();
                     switch (opcionesMantenimiento) {
                         case 1:
-                            System.out.println("\tVehiculos propios de "+clienteLogeado.getNombres()+" "+clienteLogeado.getApellidos());
+                            System.out.println("\tVehiculos propios de " + clienteLogeado.getNombres() + " " + clienteLogeado.getApellidos());
 
                             for (int i = 0; i < clienteLogeado.getVehiculos().size(); i++) {
                                 System.out.println((i + 1) + ") " + clienteLogeado.getVehiculos().get(i).getInformacionParaCliente());
@@ -903,7 +1004,7 @@ public class ConcesionariaDeAutos {
                             }
                             Vehiculo vehiculoParaMantenimiento = clienteLogeado.getVehiculos().get(opcionesMantenimiento - 1);//recuperamos el vehiculo que se hara mantenimiento de la lsita personal del cliente
                             Mantenimiento solicitudMantenimiento = clienteLogeado.mantenerAuto(vehiculoParaMantenimiento, TipoMantenimiento.PREVENTIVO);
-                            if(clienteLogeado.verificarSolicitud(vehiculoParaMantenimiento)){
+                            if (clienteLogeado.verificarSolicitud(vehiculoParaMantenimiento)) {
                                 System.out.println("Este vehiculo ya fue solicitado para Mantenimiento");
                                 break;
                             }
@@ -919,8 +1020,8 @@ public class ConcesionariaDeAutos {
                             }
                             System.out.println("Seleccione el auto que desea solicitar mantenimiento Emergente");
                             opcionesMantenimiento = opcionesCliente.nextInt();
-                            Vehiculo vEmergente = clienteLogeado.getVehiculos().get(opcionesMantenimiento-1);
-                            if(clienteLogeado.verificarSolicitud(vEmergente)){
+                            Vehiculo vEmergente = clienteLogeado.getVehiculos().get(opcionesMantenimiento - 1);
+                            if (clienteLogeado.verificarSolicitud(vEmergente)) {
                                 System.out.println("Este vehiculo ya fue solicitado para Mantenimiento");
                                 break;
                             }
@@ -938,8 +1039,11 @@ public class ConcesionariaDeAutos {
                     }
                     break;
 
-                case 0:
+                case 5:
                     salir = true;
+                    break;
+                default:
+                    System.out.println("Solo opciones del 1 al 5");
                     break;
             }
         }
@@ -1092,6 +1196,9 @@ public class ConcesionariaDeAutos {
         listaUsuarios.add(new Vendedor("89254", "Luis Fernando", "Quezada Dominguez", "lquezada", "123"));
         listaUsuarios.add(new Vendedor("44598", "Marcos Pedro", "Sanchez Herrera", "msanchez", "123"));
         listaUsuarios.add(new Vendedor("44468", "Carlos Julio", "Hernandez Zamora", "chernandez", "123"));
+        ArrayList<Vehiculo> vCliente = new ArrayList<>();
+        vCliente.add(new Automovil(5, false, true, "Honda", "Civic", 2020, TipoMotor.DIESEL, 18500, EstadoVehiculo.DISPONIBLE, 2.5, CONCESIONARIA));
+        listaUsuarios.add(new Cliente("0943156043","Jefe de Sistemas",4000,"Moises Fernando","Alvarez Orellana","malvarez","123",vCliente));
         listaUsuarios.add(new Cliente("0943675982", "Jefa de Ventas", 1800, "Karla Andrea", "Rivera Vera", "krivera", "123"));
         listaUsuarios.add(new Cliente("0981679527", "Supervisor de Sistemas", 2500, "Winston Humberto", "Leon Gutierrez", "wleon", "123"));
         ArrayList<String> certificacionesAcademicas = new ArrayList<>();
@@ -1107,8 +1214,9 @@ public class ConcesionariaDeAutos {
 
     public static ArrayList<Vehiculo> cargarVehiculos() {
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
+        
         vehiculos.add(new Automovil(4, false, true, "Chevrolet", "Aveo", 2021, TipoMotor.DIESEL, 21000, EstadoVehiculo.DISPONIBLE, 0, CONCESIONARIA));
-        vehiculos.add(new Automovil(5, false, true, "Nissan", "Aveo", 2020, TipoMotor.DIESEL, 18500, EstadoVehiculo.DISPONIBLE, 0, CONCESIONARIA));
+        vehiculos.add(new Automovil(5, false, true, "Nissan", "xZ", 2020, TipoMotor.DIESEL, 18500, EstadoVehiculo.DISPONIBLE, 2.5, CONCESIONARIA));
         vehiculos.add(new Tractor(false, TipoTransmision.HIDRAULICA, "Caterpillar", "Oruga", 2019, 10900.00, EstadoVehiculo.DISPONIBLE, 0.00, CONCESIONARIA));
         vehiculos.add(new Motocicleta(MotoCategoria.DEPORTIVA, "Honda", "CRM-250", 2022, TipoMotor.GASOLINA, 4000.00, EstadoVehiculo.DISPONIBLE, 500.00, CONCESIONARIA));
         vehiculos.add(new Motocicleta(MotoCategoria.TODOTERRENO, "Yamaha", "DT-200", 2020, TipoMotor.GASOLINA, 2500.00, EstadoVehiculo.DISPONIBLE, 100.00, CONCESIONARIA));

@@ -13,6 +13,9 @@ public class MensajeConfirmacion extends Mensaje{
     public MensajeConfirmacion(Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud) {
         super(receptor, emisor, mensaje,solicitud);
     }
+    public MensajeConfirmacion(Usuario receptor, Usuario emisor, String mensaje){
+        super(receptor,emisor,mensaje);
+    }
     
     
     
