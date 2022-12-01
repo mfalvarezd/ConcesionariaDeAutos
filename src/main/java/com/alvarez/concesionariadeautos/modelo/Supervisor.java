@@ -42,6 +42,9 @@ public class Supervisor extends Usuario {
         
 
     }
+    public void aggVentasAprobadas(Vendedor vendedor){
+        vendedor.setVentasAprobadas(vendedor.getVentasAprobadas()+1);
+    }
 
     /**
      *
