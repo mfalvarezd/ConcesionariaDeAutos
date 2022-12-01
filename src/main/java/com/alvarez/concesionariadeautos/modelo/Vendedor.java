@@ -36,14 +36,16 @@ public class Vendedor extends Usuario {
         solicitud.setEstado(EstadoSolicitud.RECHAZADA);
         usuario.getSolicitudes().get(usuario.solicitudes.indexOf(solicitud)).setEstado(EstadoSolicitud.RECHAZADA);
     }
-    
-    public void aggVentasAprobadas(){
-        this.ventasAprobadas++;
-    }
-    public int getVentasAprobadas(){
-        return ventasAprobadas;
+
+    public void setVentasAprobadas(int ventasAprobadas) {
+        this.ventasAprobadas = ventasAprobadas;
     }
 
+    public int getVentasAprobadas() {
+        return ventasAprobadas;
+    }
+    
+    
     @Override
     public String mostrarInformacion() {
         return super.mostrarInformacion() + ", vendedor con id=" + id + '}';
