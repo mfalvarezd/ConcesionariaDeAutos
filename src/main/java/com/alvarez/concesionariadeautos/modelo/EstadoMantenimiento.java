@@ -5,6 +5,6 @@
 package com.alvarez.concesionariadeautos.modelo;
 
 public enum EstadoMantenimiento {
-    ADMITIDO,ENREPARACION,ETAPAPRUEBA,DEALTA,NULL;
+    ADMITIDO,ENREPARACION,ETAPAPRUEBA,DEALTA;
     
 }
