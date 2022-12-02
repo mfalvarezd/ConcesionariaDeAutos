@@ -10,7 +10,6 @@ import java.util.Random;
 
 import java.util.Scanner;
 
-
 public class ConcesionariaDeAutos {
 
     static ArrayList<Usuario> usuarios = cargarUsuarios();//Aqui se cargan todos los usuarios que existen en el sistema
@@ -171,6 +170,9 @@ public class ConcesionariaDeAutos {
                         if (indxV == 0) {
                             System.out.println("Volviendo...");
                             break;
+                        } else if (indxV > jefeLogeado.getVehiculosPorEntregar().size()) {
+                            System.out.println("Esa opcion no existe, intente otra opcion ");
+                            break;
                         }
 
                         Vehiculo vEntrega = jefeLogeado.getVehiculosPorEntregar().get(indxV - 1);//recuperamos el vehiculo que va hacer enviado para entrega
@@ -187,24 +189,20 @@ public class ConcesionariaDeAutos {
 
                     } else {
                         System.out.println("No tiene vehiculos listo para entrega");// esto solo se ejecuta si el jefeDeTaller no tienen ningun vehiculo en su lista de vehiculos para entrega
-                        System.out.println("Seleccione 0 para volver");
-                        opciones = opcionesJefe.nextInt();
-                        if (opciones == 0) {
-                            System.out.println("Volviendo...");
-                            break;
-                        }
+
+                        System.out.println("Volviendo...");
+                        break;
+
                     }
                     break;
                 case 2:
                     if (jefeLogeado.getNsolicitudesMantenimiento() == 0) {// esto se ejectua si el jefeDeTaller no tiene ninguna solicitud
 
                         System.out.println("No tiene solicitudes nuevas en el taller");
-                        System.out.println("Seleccione 0 para volver:");
-                        int opcion = opcionesJefe.nextInt();
-                        if (opcion == 0) {
-                            System.out.println("Volviendo...");
-                            break;
-                        }
+
+                        System.out.println("Volviendo...");
+                        break;
+
                     }
 
                     ArrayList<Mantenimiento> solicitudesDeMantenimiento = new ArrayList<>();
@@ -243,6 +241,9 @@ public class ConcesionariaDeAutos {
                             int indxV = entrada.nextInt();
                             if (indxV == 0) {
                                 System.out.println("Volviendo....");
+                                break;
+                            } else if (indxV > solicitudesDeMantenimiento.size()) {
+                                System.out.println("Esa opcion no existe, intente otra opcion:");
                                 break;
                             }
                             Vehiculo vEntrega = solicitudesDeMantenimiento.get(indxV - 1).getVehiculo();
@@ -302,11 +303,14 @@ public class ConcesionariaDeAutos {
                                         System.out.println((i + 1) + ") " + solicitudesNoAdmitidas.get(i).mostrarInformacion());
 
                                     }
-                                    System.out.println("Seleccione el vehiculo a admitir");
+                                    System.out.println("Seleccione el numero del vehiculo a admitir");
                                     System.out.println("Digite 0 para cancelar");
                                     indxV = entrada.nextInt();
-                                    if(indxV==0){
+                                    if (indxV == 0) {
                                         System.out.println("Saliendo....");
+                                        break;
+                                    } else if (indxV > solicitudesNoAdmitidas.size()) {
+                                        System.out.println("Esa opcion no existe, intente otra opcion");
                                         break;
                                     }
                                     Vehiculo vAdmitir = solicitudesNoAdmitidas.get(indxV - 1).getVehiculo();
@@ -343,9 +347,13 @@ public class ConcesionariaDeAutos {
 
                                     }
                                     System.out.println("Seleccione el vehiculo a Rechazar");
+                                    System.out.println("Digite 0 para volver:");
                                     indxV = entrada.nextInt();
-                                    if(indxV==0){
+                                    if (indxV == 0) {
                                         System.out.println("Saliendo....");
+                                        break;
+                                    } else if (indxV > solicitudesNoAdmitidas.size()) {
+                                        System.out.println("Esa opcion no existe, intente otra opcion");
                                         break;
                                     }
                                     Scanner entradaT = new Scanner(System.in);
@@ -357,6 +365,10 @@ public class ConcesionariaDeAutos {
                                 case 3:
                                     System.out.println("Volviendo....");
                                     break;
+                                default:
+                                    System.out.println("Ingrese solo opciones del 1 al 3");
+                                    break;
+
                             }
 
                             break;
@@ -368,12 +380,15 @@ public class ConcesionariaDeAutos {
                                 if (indxV == 0) {
                                     System.out.println("Volviendo...");
                                     break;
+                                } else if (indxV > jefeLogeado.getVehiculosEnMantenimiento().size()) {
+                                    System.out.println("Esa opcion no existe, intente otra opcion");
+                                    break;
                                 }
                             }
                             for (int i = 0; i < jefeLogeado.getVehiculosEnMantenimiento().size(); i++) {
                                 System.out.println((i + 1) + ") " + jefeLogeado.getVehiculosEnMantenimiento().get(i).getInformacionParaCliente() + " ESTADO: " + jefeLogeado.getVehiculosEnMantenimiento().get(i).getEstadoMantenimiento());
                             }
-                            System.out.println("Seleccione el vehiculo que desea cambiar su estado de mantenimiento: ");
+                            System.out.println("Seleccione el numero del vehiculo que desea cambiar su estado de mantenimiento: ");
                             System.out.println("Seleccione 0 para volver");
                             indxV = opcionesJefe.nextInt();
                             if (indxV == 0) {
@@ -402,8 +417,17 @@ public class ConcesionariaDeAutos {
                                     jefeLogeado.cambiarEstadoDelMantenimiento(jefeLogeado.getVehiculosEnMantenimiento().get(indxV - 1), EstadoMantenimiento.DEALTA);
                                     System.out.println("Cambio de estado completo, volviendo...");
                                     break;
+                                } else {
+                                    System.out.println("Esa opcion no existe, intente otra opcion...");
                                 }
+                            } else if (indxV > jefeLogeado.getVehiculosEnMantenimiento().size()) {
+                                System.out.println("Esa opcion no existe, intente otra opcion");
+                                break;
+
                             }
+                            break;
+                        default:
+                            System.out.println("Ingrese solo opciones del 1 al 3");
                             break;
 
                     }
@@ -412,6 +436,9 @@ public class ConcesionariaDeAutos {
                 case 3:
                     System.out.println("Saliendo...");
                     salir = true;
+                    break;
+                default:
+                    System.out.println("Ingrese solo opciones del 1 al 3:");
                     break;
             }
 
@@ -441,12 +468,9 @@ public class ConcesionariaDeAutos {
                 case 1:
                     if (supervisorLogeado.getSolicitudes().size() == 0) {
                         System.out.println("No tiene nuevas solicitudes de Compra");
-                        System.out.println("Seleccione 0 para volver al menu");
-                        int opcion = opcionesSupervisor.nextInt();
-                        if (opcion == 0) {
-                            System.out.println("Volviendo...");
-                            break;
-                        }
+
+                        System.out.println("Volviendo...");
+                        break;
 
                     }
 
@@ -474,7 +498,7 @@ public class ConcesionariaDeAutos {
                                 if (opcionM == 0) {
                                     System.out.println("Volviendo al menu...");
                                     break;
-                                } else {
+                                } else if(opcionM==1){
                                     Cliente clienteComprador = (Cliente) compraSoli.getUsuario();
 
                                     Vendedor vendedorDelVehiculo = (Vendedor) compraSoli.getVendedor();
@@ -488,6 +512,8 @@ public class ConcesionariaDeAutos {
                                     System.out.println("Solicitud contestada, eliminando solicitud del registro...");
                                     supervisorLogeado.getSolicitudes().remove(i);
 
+                                }else{
+                                    System.out.println("Esa opcion no existe, ingrese 1 o 0");
                                 }
 
                             }
@@ -504,7 +530,7 @@ public class ConcesionariaDeAutos {
                                 if (opcionM == 0) {
                                     System.out.println("Volviendo al menu...");
                                     break;
-                                } else {
+                                } else if(opcionM==1){
                                     Scanner entradaTexto = new Scanner(System.in);
                                     System.out.println("Ingrese el motivo:");
 
@@ -517,6 +543,8 @@ public class ConcesionariaDeAutos {
                                     System.out.println("Solicitud contestada, eliminando solicitud del registro...");
                                     supervisorLogeado.getSolicitudes().remove(i);
 
+                                }else{
+                                    System.out.println("Esa opcion no existe ingrese 1 o 0");
                                 }
 
                             }
@@ -525,11 +553,15 @@ public class ConcesionariaDeAutos {
                         case 0:
                             System.out.println("Volviendo al menu...");
                             break;
+                        default:
+                            System.out.println("Ingrese solo opciones del 0 al 2:");
+                            break;
                     }
 
                     break;
                 case 2:
                     int i = 1;
+                    
                     for (Usuario usuario : usuarios) {
                         if (usuario instanceof Vendedor) {
                             System.out.println(i + ") Vendedor:" + usuario.getNombres() + " " + usuario.getApellidos() + " id: " + ((Vendedor) usuario).getId() + " Numero de ventas concretadas:" + ((Vendedor) usuario).getVentasAprobadas());
@@ -540,11 +572,14 @@ public class ConcesionariaDeAutos {
                     System.out.println("Digite 0 para volver al menu");
                     Scanner sc = new Scanner(System.in);
                     int volver = sc.nextInt();
-                    if (volver == 0) {
-
-                        System.out.println("Volviendo...");
-
-                        break;
+                    switch(volver){
+                        case 0:
+                            System.out.println("Volviendo...");
+                            break;
+                        default:
+                            System.out.println("Esa opcion no existe");
+                            break;
+                              
                     }
                     break;
                 case 3:
@@ -755,6 +790,10 @@ public class ConcesionariaDeAutos {
                         case 5:
                             System.out.println("Volviendo...");
                             break;
+                        default:
+                            System.out.println("Seleccione solo opciones del 1 al 5");
+                            break;
+                         
 
                     }
 
@@ -789,7 +828,7 @@ public class ConcesionariaDeAutos {
             System.out.println("2) Revisar Solicitudes pendientes");
             System.out.println("3) Revisar Mensajes");
             if (esClienteHabitual(clienteLogeado)) {
-                
+
                 System.out.println("4) Realizar Mantenimiento");
             }
 
