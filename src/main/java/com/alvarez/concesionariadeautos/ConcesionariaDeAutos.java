@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import java.util.Scanner;
-
+/**
+ * 
+ * @author Moises Alvarez
+ * @author Kevin Maga
+ * @author Washington Parra
+ */
 public class ConcesionariaDeAutos {
 
     static ArrayList<Usuario> usuarios = cargarUsuarios();//Aqui se cargan todos los usuarios que existen en el sistema
