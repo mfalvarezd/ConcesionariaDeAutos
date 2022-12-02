@@ -35,7 +35,8 @@ public class Supervisor extends Usuario {
 
     public void rechazarCompra(Cliente usuario, String motivo, Vehiculo vehiculo,Solicitud solicitud) {
         solicitud.setEstado(EstadoSolicitud.RECHAZADA);
-        usuario.addMensaje(new MensajeCompra(this, usuario, motivo,solicitud));
+        usuario.addMensaje(new MensajeCompra(usuario, this, motivo,solicitud));
+        usuario.getSolicitudes().remove(solicitud);
         
 
     }
