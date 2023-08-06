@@ -4,18 +4,24 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-public class MensajeCotizacion extends Mensaje{
+public class MensajeCotizacion implements Mensaje{
+    private Usuario receptor;
+    private Usuario emisor;
+    private String mensaje;
+    private Solicitud solicitud;
     private Vehiculo vehiculo;
-    
-    public MensajeCotizacion(Vehiculo vehiculo,Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud){
-        super(receptor,emisor, mensaje,solicitud);
-        this.vehiculo=vehiculo;
+
+    public MensajeCotizacion(Vehiculo vehiculo, Usuario receptor, Usuario emisor, String mensaje, Solicitud solicitud) {
+        this.receptor = receptor;
+        this.emisor = emisor;
+        this.mensaje = mensaje;
+        this.solicitud = solicitud;
+        this.vehiculo = vehiculo;
     }
-    public MensajeCotizacion(Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud){
-        super(receptor,emisor,mensaje,solicitud);
-    }
-    public Vehiculo getVehiculo(){
-        return vehiculo;
+
+    @Override
+    public String getMensaje() {
+        return "Mensaje de cotización: " + mensaje + "\nVehiculo: " + vehiculo.toString();
     }
     
 }

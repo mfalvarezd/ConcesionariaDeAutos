@@ -4,15 +4,21 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
-public class MensajeConfirmacion extends Mensaje{
+public class MensajeConfirmacion implements Mensaje {
+    private Usuario receptor;
+    private Usuario emisor;
+    private String mensaje;
+    private Solicitud solicitud;
 
-    public MensajeConfirmacion(Usuario receptor, Usuario emisor, String mensaje,Solicitud solicitud) {
-        super(receptor, emisor, mensaje,solicitud);
+    public MensajeConfirmacion(Usuario receptor, Usuario emisor, String mensaje, Solicitud solicitud) {
+        this.receptor = receptor;
+        this.emisor = emisor;
+        this.mensaje = mensaje;
+        this.solicitud = solicitud;
     }
-    public MensajeConfirmacion(Usuario receptor, Usuario emisor, String mensaje){
-        super(receptor,emisor,mensaje);
+
+    @Override
+    public String getMensaje() {
+        return "Mensaje de confirmación: " + mensaje;
     }
-    
-    
-    
 }

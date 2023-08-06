@@ -18,19 +18,6 @@ public abstract class Vehiculo {
     protected String concesionaria;
     protected Cliente propietario;
 
-    public Vehiculo(String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
-        this.marca = marca;
-        this.modelo = modelo;
-        this.anioFabricacion = anioFabricacion;
-        this.tipoMotor = tipoMotor;
-        this.numLlantas = numLlantas;
-        this.precio = precio;
-        this.estado = estado;
-        this.estadoMantenimiento=null;
-        this.kilometraje = kilometraje;
-        this.concesionaria = concesionaria;
-        this.propietario=propietario;
-    }
 
     public Cliente getPropietario() {
         return propietario;

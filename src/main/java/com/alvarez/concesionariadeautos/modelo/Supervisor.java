@@ -28,7 +28,7 @@ public class Supervisor extends Usuario {
         solicitud.setEstado(EstadoSolicitud.APROBADA);
         
 
-        usuario.addMensaje(new MensajeCompra(vehiculo, usuario, this, "Se ha aprobado su solicitud de compra para el vehiculo " + vehiculo.mostrarInformacion() + " le comunicaremos pronto cuando su vehiculo este listo para entrega", solicitud));
+        usuario.addMensaje(new MensajeCompra(usuario, this, "Se ha aprobado su solicitud de compra para el vehiculo " + vehiculo.mostrarInformacion() + " le comunicaremos pronto cuando su vehiculo este listo para entrega", solicitud));
         vehiculo.setEstado(EstadoVehiculo.SOLICITADO);
 
     }

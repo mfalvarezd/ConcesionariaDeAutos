@@ -1271,7 +1271,7 @@ public class ConcesionariaDeAutos {
     public static ArrayList<Vehiculo> cargarVehiculos() {
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();
 
-        vehiculos.add(new Automovil(4, false, true, "Chevrolet", "Aveo", 2021, TipoMotor.DIESEL, 21000, EstadoVehiculo.DISPONIBLE, 0, CONCESIONARIA));
+        vehiculos.add(new Builer(4, false, true, "Chevrolet", "Aveo", 2021, TipoMotor.DIESEL, 21000, EstadoVehiculo.DISPONIBLE, 0, CONCESIONARIA));
         vehiculos.add(new Automovil(5, false, true, "Nissan", "xZ", 2020, TipoMotor.DIESEL, 18500, EstadoVehiculo.DISPONIBLE, 2.5, CONCESIONARIA));
         vehiculos.add(new Tractor(false, TipoTransmision.HIDRAULICA, "Caterpillar", "Oruga", 2019, 10900.00, EstadoVehiculo.DISPONIBLE, 0.00, CONCESIONARIA));
         vehiculos.add(new Motocicleta(MotoCategoria.DEPORTIVA, "Honda", "CRM-250", 2022, TipoMotor.GASOLINA, 4000.00, EstadoVehiculo.DISPONIBLE, 500.00, CONCESIONARIA));

@@ -5,14 +5,11 @@
 package com.alvarez.concesionariadeautos.modelo;
 
 public class Tractor extends Vehiculo{
+
+    
     private boolean esAgricola;
     private TipoTransmision  tipoTransmision;
 
-        public Tractor(boolean esAgricola, TipoTransmision tipoTransmision, String marca, String modelo, int anioFabricacion,double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
-            super(marca, modelo, anioFabricacion, TipoMotor.DIESEL, 4, precio, estado, kilometraje, concesionaria);
-            this.esAgricola = esAgricola;
-            this.tipoTransmision = tipoTransmision;
-        }
     @Override
     public void mostrarDatos(){
         super.mostrarDatos();
@@ -22,6 +19,22 @@ public class Tractor extends Vehiculo{
             System.out.println("El tractor NO es de uso Agricola");
         }
         System.out.println("Tipo de transmision: "+tipoTransmision);
+    }
+
+    public boolean isEsAgricola() {
+        return esAgricola;
+    }
+
+    public void setEsAgricola(boolean esAgricola) {
+        this.esAgricola = esAgricola;
+    }
+
+    public TipoTransmision getTipoTransmision() {
+        return tipoTransmision;
+    }
+
+    public void setTipoTransmision(TipoTransmision tipoTransmision) {
+        this.tipoTransmision = tipoTransmision;
     }
 
 
