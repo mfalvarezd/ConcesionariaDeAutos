@@ -4,7 +4,16 @@
  */
 package com.alvarez.concesionariadeautos.modelo;
 
+/**
+ *
+ * @author leo
+ */
+public abstract class MensajeDecorator implements Mensaje {
+     protected Mensaje mensaje;
 
-public interface Mensaje {
-    String getMensaje();
+    public MensajeDecorator(Mensaje mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    
 }

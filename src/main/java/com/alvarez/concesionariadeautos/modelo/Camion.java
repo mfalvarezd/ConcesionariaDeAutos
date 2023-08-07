@@ -9,11 +9,6 @@ public class Camion extends Vehiculo{
     private double capacidadCarga;
     private int numEjes;
 
-    public Camion(double capacidadCarga,String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
-        super(marca, modelo, anioFabricacion, tipoMotor, numLlantas, precio, estado, kilometraje, concesionaria);
-        this.capacidadCarga = capacidadCarga;
-        this.numEjes = numLlantas/2;
-    }
 
 
 
@@ -28,8 +23,24 @@ public class Camion extends Vehiculo{
         System.out.println("Numero de Ejes: "+numEjes);
     }
 
+    public double getCapacidadCarga() {
+        return capacidadCarga;
+    }
 
+    public void setCapacidadCarga(double capacidadCarga) {
+        this.capacidadCarga = capacidadCarga;
+    }
 
+    public int getNumEjes() {
+        return numEjes;
+    }
+
+    public void setNumEjes(int numEjes) {
+        this.numEjes = numEjes;
+    }
+    
+    
+    
 
     
 }

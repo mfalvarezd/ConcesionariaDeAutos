@@ -25,12 +25,7 @@ public class Automovil extends Vehiculo{
      * @param kilometraje
      * @param concesionaria
      */
-    public Automovil(int numAsientos, boolean esConvertible, boolean camaraRetro, String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor,double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
-        super(marca, modelo, anioFabricacion, tipoMotor, 4, precio, estado, kilometraje, concesionaria);
-        this.numAsientos = numAsientos;
-        this.esConvertible = esConvertible;
-        this.camaraRetro = camaraRetro;
-    }
+    
 
 
 

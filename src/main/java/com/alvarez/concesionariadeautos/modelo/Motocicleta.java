@@ -8,10 +8,6 @@ package com.alvarez.concesionariadeautos.modelo;
 public class Motocicleta extends Vehiculo{
     private MotoCategoria categoria;
 
-    public Motocicleta(MotoCategoria categoria, String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor,double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
-        super(marca, modelo, anioFabricacion, tipoMotor, 2, precio, estado, kilometraje, concesionaria);
-        this.categoria = categoria;
-    }
 
 
 
@@ -28,6 +24,14 @@ public class Motocicleta extends Vehiculo{
     public void mostrarDatos(){
         super.mostrarDatos();
         System.out.println("Categoria de moto: "+categoria);
+    }
+
+    public MotoCategoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(MotoCategoria categoria) {
+        this.categoria = categoria;
     }
     
     
