@@ -7,7 +7,7 @@ package com.alvarez.concesionariadeautos.modelo;
 public class Vendedor extends Usuario {
 
     private String id;
-    private int ventasAprobadas=0;
+    private int ventasAprobadas = 0;
 
     public Vendedor(String id, String nombres, String apellidos, String usuario, String password) {
         super(nombres, apellidos, usuario, password);
@@ -18,19 +18,22 @@ public class Vendedor extends Usuario {
         return id;
     }
 
-    public void enviarCotizacion(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud) {
-        usuario.addMensaje(new MensajeCotizacion(vehiculo, usuario, this, "Ha recibido la informacion completa del vehiculo que cotizo ", solicitud));
-
-        solicitud.setEstado(EstadoSolicitud.APROBADA);
-        usuario.getSolicitudes().get(usuario.solicitudes.indexOf(solicitud)).setEstado(EstadoSolicitud.APROBADA);//
-
+    public void enviarCotizacion(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud, String mensaje) {
+        usuario.addMensaje(new MensajeCotizacion(vehiculo, usuario, this, mensaje, solicitud));
+        actualizarEstadoSolicitud(usuario, solicitud, EstadoSolicitud.APROBADA);
     }
 
-    public void rechazarCotizacion(Cliente usuario, String motivo, Solicitud solicitud,Vehiculo vehiculo) {
-        usuario.addMensaje(new MensajeCotizacion(vehiculo,usuario, this, motivo, solicitud));
+    public void rechazarCotizacion(Cliente usuario, String motivo, Solicitud solicitud, Vehiculo vehiculo) {
+        usuario.addMensaje(new MensajeCotizacion(vehiculo, usuario, this, motivo, solicitud));
+        actualizarEstadoSolicitud(usuario, solicitud, EstadoSolicitud.RECHAZADA);
+    }
 
-        solicitud.setEstado(EstadoSolicitud.RECHAZADA);
-        usuario.getSolicitudes().get(usuario.solicitudes.indexOf(solicitud)).setEstado(EstadoSolicitud.RECHAZADA);
+    private void actualizarEstadoSolicitud(Cliente usuario, Solicitud solicitud, EstadoSolicitud estado) {
+        solicitud.setEstado(estado);
+        int index = usuario.solicitudes.indexOf(solicitud);
+        if (index != -1) {
+            usuario.getSolicitudes().get(index).setEstado(estado);
+        }
     }
 
     public void setVentasAprobadas(int ventasAprobadas) {
@@ -40,8 +43,7 @@ public class Vendedor extends Usuario {
     public int getVentasAprobadas() {
         return ventasAprobadas;
     }
-    
-    
+
     @Override
     public String mostrarInformacion() {
         return super.mostrarInformacion() + ", vendedor con id=" + id + '}';
@@ -50,6 +52,8 @@ public class Vendedor extends Usuario {
     public void eliminarSolicitud(Solicitud solicitud) {
         this.solicitudes.remove(solicitud);
     }
-    //pROBAND
 
+    public void enviarCotizacion(Cliente cliente, Vehiculo vehiculo, Solicitud solicitud) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

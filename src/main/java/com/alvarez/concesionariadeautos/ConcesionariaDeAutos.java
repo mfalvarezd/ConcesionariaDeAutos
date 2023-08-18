@@ -130,7 +130,7 @@ public class ConcesionariaDeAutos {
 
     }
 
-    public static String getTipoUsuario(Usuario usuario) {
+    private static String getTipoUsuario(Usuario usuario) {
         String tipoUsuario = "";
 
         if (usuario instanceof Cliente) {
@@ -1301,10 +1301,14 @@ public class ConcesionariaDeAutos {
 
     }
 
-    public static int getNumeroEntre(int inicio, int fin) {
+    /*public static int getNumeroEntre(int inicio, int fin) {
         Random r = new Random();
         int n = r.nextInt(fin - inicio) + inicio;
         return n;
+    }*/
+    public static int getNumeroEntre(int inicio, int fin) {
+        Random r = new Random();
+        return r.nextInt(fin - inicio) + inicio;
     }
 
     public static Supervisor getSupervisor() {

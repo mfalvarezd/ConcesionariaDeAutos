@@ -6,17 +6,17 @@ package com.alvarez.concesionariadeautos.modelo;
 
 public abstract class Vehiculo {
 
-    protected String marca;
-    protected String modelo;
-    protected int anioFabricacion;
-    protected TipoMotor tipoMotor;
-    protected int numLlantas;
-    protected double precio;
-    protected EstadoVehiculo estado;
-    protected EstadoMantenimiento estadoMantenimiento;
-    protected double kilometraje;
-    protected String concesionaria;
-    protected Cliente propietario;
+    private String marca;
+    private String modelo;
+    private int anioFabricacion;
+    private TipoMotor tipoMotor;
+    private int numLlantas;
+    private double precio;
+    private EstadoVehiculo estado;
+    private EstadoMantenimiento estadoMantenimiento;
+    private double kilometraje;
+    private String concesionaria;
+    private Cliente propietario;
 
     public Vehiculo(String marca, String modelo, int anioFabricacion, TipoMotor tipoMotor, int numLlantas, double precio, EstadoVehiculo estado, double kilometraje, String concesionaria) {
         this.marca = marca;
@@ -26,10 +26,10 @@ public abstract class Vehiculo {
         this.numLlantas = numLlantas;
         this.precio = precio;
         this.estado = estado;
-        this.estadoMantenimiento=null;
+        this.estadoMantenimiento = null;
         this.kilometraje = kilometraje;
         this.concesionaria = concesionaria;
-        this.propietario=propietario;
+        this.propietario = null;
     }
 
     public Cliente getPropietario() {
@@ -39,14 +39,21 @@ public abstract class Vehiculo {
     public void setPropietario(Cliente propietario) {
         this.propietario = propietario;
     }
-    
 
     public double getKilometraje() {
         return kilometraje;
     }
 
     public void setKilometraje(double kilometraje) {
-        this.kilometraje = kilometraje;
+        if (kilometraje >= 0) {
+            this.kilometraje = kilometraje;
+        } else {
+            throw new IllegalArgumentException("El kilometraje no puede ser negativo");
+        }
+    }
+
+    public EstadoMantenimiento getEstadoMantenimiento() {
+        return estadoMantenimiento;
     }
 
     public void setEstadoMantenimiento(EstadoMantenimiento estadoMantenimiento) {
@@ -74,7 +81,11 @@ public abstract class Vehiculo {
     }
 
     public void setAnioFabricacion(int anioFabricacion) {
-        this.anioFabricacion = anioFabricacion;
+        if (anioFabricacion >= 1900) {
+            this.anioFabricacion = anioFabricacion;
+        } else {
+            throw new IllegalArgumentException("Año de fabricación inválido");
+        }
     }
 
     public TipoMotor getTipoMotor() {
@@ -90,7 +101,11 @@ public abstract class Vehiculo {
     }
 
     public void setPrecio(double precio) {
-        this.precio = precio;
+        if (precio >= 0) {
+            this.precio = precio;
+        } else {
+            throw new IllegalArgumentException("El precio no puede ser negativo");
+        }
     }
 
     public EstadoVehiculo getEstado() {
@@ -114,7 +129,11 @@ public abstract class Vehiculo {
     }
 
     public void setNumLlantas(int numLlantas) {
-        this.numLlantas = numLlantas;
+        if (numLlantas >= 0) {
+            this.numLlantas = numLlantas;
+        } else {
+            throw new IllegalArgumentException("Número de llantas inválido");
+        }
     }
 
     public String getInformacionParaCliente() {
@@ -130,18 +149,12 @@ public abstract class Vehiculo {
     }
 
     public void mostrarDatos() {
-        
         System.out.println("Marca: " + marca);
         System.out.println("Modelo: " + modelo);
         System.out.println("Año de fabricacion: " + anioFabricacion);
         System.out.println("Tipo de motor: " + tipoMotor);
         System.out.println("Numero de llantas: " + numLlantas);
-        System.out.println("Precio: "+ precio+"$");
-        System.out.println("Kilometraje: "+kilometraje+"km");
+        System.out.println("Precio: " + precio + "$");
+        System.out.println("Kilometraje: " + kilometraje + "km");
     }
-
-    public EstadoMantenimiento getEstadoMantenimiento() {
-        return estadoMantenimiento;
-    }
-
 }
