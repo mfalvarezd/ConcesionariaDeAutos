@@ -13,44 +13,40 @@ public class Supervisor extends Usuario {
 
     public Supervisor(ArrayList<String> certificacionesAcademicas, String nombres, String apellidos, String usuario, String password) {
         super(nombres, apellidos, usuario, password);
-        this.certificacionesAcademicas = certificacionesAcademicas;
+        this.certificacionesAcademicas = new ArrayList<>(certificacionesAcademicas);
     }
 
     public ArrayList<String> getCertificacionesAcademicas() {
-        return certificacionesAcademicas;
+        return new ArrayList<>(certificacionesAcademicas);
     }
 
     public void setCertificacionesAcademicas(ArrayList<String> certificacionesAcademicas) {
-        this.certificacionesAcademicas = certificacionesAcademicas;
+        this.certificacionesAcademicas = new ArrayList<>(certificacionesAcademicas);
+    }
+
+    public void addCertificacionAcademica(String certificacion) {
+        certificacionesAcademicas.add(certificacion);
     }
 
     public void aprobarCompra(Cliente usuario, Vehiculo vehiculo, Solicitud solicitud) {
         solicitud.setEstado(EstadoSolicitud.APROBADA);
-        
 
         usuario.addMensaje(new MensajeCompra(vehiculo, usuario, this, "Se ha aprobado su solicitud de compra para el vehiculo " + vehiculo.mostrarInformacion() + " le comunicaremos pronto cuando su vehiculo este listo para entrega", solicitud));
         vehiculo.setEstado(EstadoVehiculo.SOLICITADO);
-
     }
 
-    public void rechazarCompra(Cliente usuario, String motivo, Vehiculo vehiculo,Solicitud solicitud) {
+    public void rechazarCompra(Cliente usuario, String motivo, Vehiculo vehiculo, Solicitud solicitud) {
         solicitud.setEstado(EstadoSolicitud.RECHAZADA);
-        usuario.addMensaje(new MensajeCompra(usuario, this, motivo,solicitud));
+        usuario.addMensaje(new MensajeCompra(usuario, this, motivo, solicitud));
         usuario.getSolicitudes().remove(solicitud);
-        
-
-    }
-    public void aggVentasAprobadas(Vendedor vendedor){
-        vendedor.setVentasAprobadas(vendedor.getVentasAprobadas()+1);
     }
 
-    /**
-     *
-     * @return
-     */
+    public void aggVentasAprobadas(Vendedor vendedor) {
+        vendedor.setVentasAprobadas(vendedor.getVentasAprobadas() + 1);
+    }
+
     @Override
     public String mostrarInformacion() {
         return super.mostrarInformacion() + ", certificacionesAcademicas=" + certificacionesAcademicas + '}';
     }
-
 }
